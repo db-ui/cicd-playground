@@ -6,7 +6,10 @@
     "test": "npm run test --workspace=@ci-cd/test",
     "deploy:pages": "npm run build:abcd && npm run deploy --workspace=@ci-cd/pages",
     "build:abcd": "npm run build --workspace=@ci-cd/abcd",
-    "publish:abcd": "npm run build:abcd && npm run publish:dryrun --workspace=@ci-cd/abcd"
+    "publish:abcd": "npm run build:abcd && npm run publish:dryrun --workspace=@ci-cd/abcd",
+    "serve": "npx http-server out",
+    "cypress:ci": "cypress run",
+    "cypress:local": "cypress open"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,8 @@
   "homepage": "https://github.com/dbsystel/cicd-playground#readme",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "cypress": "^10.2.0"
+  }
 }
