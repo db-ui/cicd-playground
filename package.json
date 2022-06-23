@@ -1,0 +1,21 @@
+{
+  "name": "@ci-cd/playground-monorepo",
+  "version": "0.0.0",
+  "description": "Playground for testing GitHub CI/CD",
+  "scripts": {
+    "test": "npm run test --workspace=@ci-cd/test",
+    "build": "npm run build --workspace=@ci-cd/pages"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbsystel/cicd-playground.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dbsystel/cicd-playground/issues"
+  },
+  "homepage": "https://github.com/dbsystel/cicd-playground#readme",
+  "workspaces": [
+    "packages/*"
+  ]
+}

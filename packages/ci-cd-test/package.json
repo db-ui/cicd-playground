@@ -1,0 +1,17 @@
+{
+  "name": "@ci-cd/test",
+  "version": "0.0.0",
+  "description": "Test the Playground",
+  "scripts": {
+    "test": "echo \"It is all good, man\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbsystel/cicd-playground.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dbsystel/cicd-playground/issues"
+  },
+  "homepage": "https://github.com/dbsystel/cicd-playground#readme"
+}
