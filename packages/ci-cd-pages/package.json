@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "description": "Create gh-pages for the Playground",
   "scripts": {
-    "build": "mkdir out && cp ./public/index.html out && mv out ../.."
+    "build": "npm run clean && npx parcel build src/index.html",
+    "clean": "rm -Rf out dist ../../out",
+    "copy": "mkdir out && cp ./dist/* out && mv out ../..",
+    "deploy": "npm run build && npm run copy",
+    "serve": "npm run build && npx http-server ./dist"
   },
   "repository": {
     "type": "git",

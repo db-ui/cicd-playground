@@ -1,3 +1,5 @@
 .history
 node_modules
 out
+dist
+.parcel-cache
