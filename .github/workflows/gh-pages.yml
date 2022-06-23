@@ -1,4 +1,4 @@
-name: GitHub Pages
+name: Test and deploy to GitHub Pages
 
 on:
   push:
