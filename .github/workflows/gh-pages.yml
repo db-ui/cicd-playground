@@ -46,10 +46,14 @@ jobs:
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
 
+      - name: 🏗 Build module
+        run: npm run publish:abcd
+
       - name: 📰 Publish to NPM (dry run)
         run: npm run publish:abcd
 
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     needs: [test]
     concurrency:
