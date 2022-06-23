@@ -55,7 +55,6 @@ jobs:
           start: npm run serve
           wait-on: "http://localhost:8080"
           wait-on-timeout: 120
-          working-directory: e2e
           config: pageLoadTimeout=100000,baseUrl=http://localhost:8080
 
       - name: 🛗 Upload Artifacts
