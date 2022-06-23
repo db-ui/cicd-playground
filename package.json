@@ -5,7 +5,8 @@
   "scripts": {
     "test": "npm run test --workspace=@ci-cd/test",
     "deploy:pages": "npm run build:abcd && npm run deploy --workspace=@ci-cd/pages",
-    "build:abcd": "npm run build --workspace=@ci-cd/abcd"
+    "build:abcd": "npm run build --workspace=@ci-cd/abcd",
+    "publish:abcd": "npm run publish:dryrun --workspace=@ci-cd/abcd"
   },
   "repository": {
     "type": "git",
