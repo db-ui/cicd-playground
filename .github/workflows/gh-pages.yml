@@ -3,11 +3,16 @@ name: Test and deploy to GitHub Pages
 on: [push]
 
 jobs:
+  init:
+    uses: ./.github/workflows/init.yml
+
   test:
     uses: ./.github/workflows/npm-test.yml
+    needs: [init]
 
   cypress:
     uses: ./.github/workflows/cypress.yml
+    needs: [init]
 
   publish:
     name: Publish

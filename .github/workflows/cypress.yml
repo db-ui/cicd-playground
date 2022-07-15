@@ -11,9 +11,6 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup npm
-        uses: ./.github/actions/npm-init
-
       - name: 🍼 Create pages build
         run: npm run deploy:pages
 

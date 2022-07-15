@@ -11,12 +11,6 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ls repo
-        run: ls
-
-      - name: ⎔ Setup npm
-        uses: ./.github/actions/npm-init
-
       - name: ⚡ Run test
         run: npm test
 
