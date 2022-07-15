@@ -23,12 +23,6 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup npm
-        uses: actions/cicd-playground@v1
-
-      - name: 🏗 Build module
-        run: npm run publish:abcd
-
       - name: 📰 Publish to NPM (dry run)
         run: npm run publish:abcd
 
@@ -42,9 +36,6 @@ jobs:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
-
-      - name: ⎔ Setup npm
-        uses: actions/cicd-playground@v1
 
       - name: 🍼 Create pages build
         run: npm run deploy:pages

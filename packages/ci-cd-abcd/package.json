@@ -8,7 +8,7 @@
   "description": "abcd module",
   "scripts": {
     "watch": "parcel watch",
-    "build": "parcel build",
+    "build": "parcel build src/index.ts",
     "publish:dryrun": "npm publish --dry-run"
   },
   "repository": {
