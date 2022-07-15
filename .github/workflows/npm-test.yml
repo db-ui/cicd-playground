@@ -15,7 +15,7 @@ jobs:
         run: ls
 
       - name: ⎔ Setup npm
-        uses: ./.github/actions/action.yml
+        uses: ./.github/actions/action
 
       - name: ⚡ Run test
         run: npm test
