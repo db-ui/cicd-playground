@@ -19,9 +19,18 @@ jobs:
         with:
             node-version: 16
             cache: 'npm'
-            cache-dependency-path: '**/*/package-lock.json'
+            cache-dependency-path: '**/package-lock.json'
+
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
+
+      - name: 📥 Download deps monorepo
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: |
+            packages/ci-cd-abcd
+            packages/ci-cd-pages
+            packages/ci-cd-test
 
 
