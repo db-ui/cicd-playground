@@ -1,0 +1,15 @@
+name: 'NPM init'
+description: 'Cancels current workflow and init npm'
+runs:
+  using: "composite"
+  steps:
+    - name: 🛑 Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.9.1
+
+    - name: ⎔ Setup node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: 📥 Download deps
+      uses: bahmutov/npm-install@v1

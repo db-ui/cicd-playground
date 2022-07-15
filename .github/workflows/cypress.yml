@@ -1,0 +1,45 @@
+name: Run Cypress on repo
+
+on:
+  workflow_call:
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: ⎔ Setup npm
+        uses: actions/cicd-playground@v1
+
+      - name: 🍼 Create pages build
+        run: npm run deploy:pages
+
+      - name: 🧪 Cypress run
+        # Install NPM dependencies and run all Cypress tests
+        uses: cypress-io/github-action@v4
+        with:
+          start: npm run serve
+          wait-on: "http://localhost:8080"
+          wait-on-timeout: 120
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:8080
+
+      - name: 🛗 Upload Artifacts
+        uses: actions/upload-artifact@v2
+        # after the test run completes
+        # store videos and any screenshots
+        # NOTE: screenshots will be generated only if an E2E test failed
+        # thus we store screenshots only on failures
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+      - uses: actions/upload-artifact@v2
+        # Test run video was always captured, so this action uses "always()" condition
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos
+
