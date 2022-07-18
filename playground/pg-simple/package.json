@@ -1,0 +1,24 @@
+{
+  "name": "@ci-cd/playground-simple",
+  "version": "0.0.0",
+  "description": "Create simple page for Playground",
+  "type": "module",
+  "scripts": {
+    "clean": "npx rimraf -y ../../out",
+    "dev": "vite",
+    "build": "npm run clean && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dbsystel/cicd-playground.git"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dbsystel/cicd-playground/issues"
+  },
+  "homepage": "https://github.com/dbsystel/cicd-playground#readme",
+  "devDependencies": {
+    "vite": "^3.0.0"
+  }
+}

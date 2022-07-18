@@ -10,6 +10,10 @@ jobs:
     uses: ./.github/workflows/01-npm-test.yml
     needs: [init]
 
+  build:
+    uses: ./.github/workflows/01-build-playground.yml
+    needs: [init]
+
   cypress:
     uses: ./.github/workflows/01-cypress.yml
     needs: [init]

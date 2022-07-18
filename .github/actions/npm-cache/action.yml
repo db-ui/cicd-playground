@@ -1,5 +1,18 @@
 name: 'NPM Cache Action'
 description: 'Initialize NPM Cache'
+inputs:
+  id:
+    description: 'Used to get cache in other jobs'
+    required: true
+    default: 'npm-cache'
+  nodeModulesPath:
+    description: 'Path for node_modules'
+    required: true
+    default: './node_modules'
+  packageLockPath:
+    description: 'Path for package-lock.json'
+    required: true
+    default: './package-lock.json'
 runs:
   using: "composite"
   steps:
@@ -10,12 +23,10 @@ runs:
 #        cache: 'npm'
 
     - uses: actions/cache@v3
-      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      id: ${{ inputs.id }} # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
       with:
-        path: |
-          **/node_modules
-          ${{ steps.npm-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        path: ${{ inputs.nodeModulesPath }}
+        key: ${{ runner.os }}-node-${{ hashFiles(${{ inputs.packageLockPath }}) }}
         restore-keys: |
           ${{ runner.os }}-node-
 

@@ -1,0 +1,24 @@
+name: Build Playground
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Build Playground
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔄 Init Cache Playground
+        uses: ./.github/actions/npm-cache
+        with:
+          id: 'playground-npm-cache'
+          nodeModulesPath: './playground/pg-simple/node_modules'
+          packageLockPath: './playground/pg-simple/package-lock.json'
+
+      - name: 🍼 Build playground
+        run: cd playground/simple && npm run build
+
+
