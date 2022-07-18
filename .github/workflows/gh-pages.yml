@@ -23,7 +23,8 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - uses: ./.github/actions/npm-cache
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
 
       - name: 📰 Publish to NPM (dry run)
         run: npm run publish:abcd
@@ -39,7 +40,8 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - uses: ./.github/actions/npm-cache
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
 
       - name: 🍼 Create pages build
         run: npm run deploy:pages

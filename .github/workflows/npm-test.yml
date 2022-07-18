@@ -11,7 +11,8 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - uses: ./.github/actions/npm-cache
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
 
       - name: ⚡ Run test
         run: npm test
