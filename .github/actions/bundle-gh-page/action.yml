@@ -9,7 +9,7 @@ runs:
     - name: 📥 Get gh-pages tar
       uses: robinraju/release-downloader@v1.4
       with:
-          repository: ""
+          repository: "dbsystel/cicd-playground"
           tag: "gh-pages"
           tarBall: true
           out-file-path: "public.tar.gz"
