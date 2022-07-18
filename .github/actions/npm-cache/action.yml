@@ -1,0 +1,25 @@
+name: 'Test Action'
+description: 'You can use this action inside job with uses: ./.github/actions/test-action'
+runs:
+  using: "composite"
+  steps:
+    - name: ⬇️ Checkout repo
+      uses: actions/checkout@v3
+
+#    - name: ⎔ Setup node
+#      uses: actions/setup-node@v3
+#      with:
+#        node-version: 16
+#        cache: 'npm'
+
+    - name: 🔄 Init Cache
+      uses: actions/cache@v3
+      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      with:
+        path: |
+          **/node_modules
+          ${{ steps.npm-cache-dir.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+

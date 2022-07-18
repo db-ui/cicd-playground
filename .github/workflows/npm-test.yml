@@ -8,8 +8,7 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
+      - uses: ./.github/actions/test-action'
 
       - name: ⚡ Run test
         run: npm test

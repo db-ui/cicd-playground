@@ -1,6 +1,0 @@
-name: 'Test Action'
-description: 'You can use this action inside job with uses: ./.github/actions/test-action'
-runs:
-  using: "composite"
-  steps:
-    - uses: actions/checkout@v3
