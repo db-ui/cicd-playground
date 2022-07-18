@@ -1,15 +1,13 @@
 {
-  "name": "@ci-cd/abcd",
+  "name": "@ci-cd/playground-simple",
   "version": "0.0.0",
-  "source": "src/index.ts",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "description": "abcd module",
+  "description": "Create simple page for Playground",
+  "type": "module",
   "scripts": {
-    "tsc": "tsc -p . ",
-    "build": "npm run tsc",
-    "publish:dryrun": "npm publish --dry-run"
+    "clean": "npx rimraf -y ../../out",
+    "dev": "vite",
+    "build": "npm run clean && vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -21,6 +19,6 @@
   },
   "homepage": "https://github.com/dbsystel/cicd-playground#readme",
   "devDependencies": {
-    "typescript": "^4.7.4"
+    "vite": "^3.0.0"
   }
 }

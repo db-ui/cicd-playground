@@ -3,3 +3,6 @@ node_modules
 out
 dist
 .parcel-cache
+.idea
+/public.tar.gz
+/public/

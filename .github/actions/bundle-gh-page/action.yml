@@ -1,0 +1,26 @@
+name: "Bundle GitHub Page"
+description: "This action bundles the current gh-page branch with the out folder"
+runs:
+  using: "composite"
+  steps:
+    - name: ➕ Create public dir
+      run: mkdir public
+      shell: bash
+    - name: 📥 Get gh-pages tar
+      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages
+      shell: bash
+    - name: 📦 Unpack Tar
+      run: tar -zxvf gh-pages -C public --strip-components 1
+      shell: bash
+    - name: ↔ Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+    - name: 📁 Move ./out folder to public for preview
+      if: ${{ !contains( github.ref, 'main') }}
+      run: mv ./out ./public/${{ steps.extract_branch.outputs.branch }}
+      shell: bash
+    - name: 📁 Move ./out folder to public for main
+      if: ${{ contains( github.ref, 'main') }}
+      run: mv ./out ./public
+      shell: bash

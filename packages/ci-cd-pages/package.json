@@ -2,12 +2,12 @@
   "name": "@ci-cd/pages",
   "version": "0.0.0",
   "description": "Create gh-pages for the Playground",
+  "type": "module",
   "scripts": {
-    "build": "npm run clean && npx parcel build src/index.html --public-url ./",
-    "clean": "rm -Rf out dist ../../out",
-    "copy": "mkdir out && cp ./dist/* out && mv out ../..",
-    "deploy": "npm run build && npm run copy",
-    "serve": "npm run build && npx http-server ./dist"
+    "clean": "npx rimraf -y ../../out",
+    "dev": "vite",
+    "build": "npm run clean && vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/dbsystel/cicd-playground/issues"
   },
-  "homepage": "https://github.com/dbsystel/cicd-playground#readme"
+  "homepage": "https://github.com/dbsystel/cicd-playground#readme",
+  "devDependencies": {
+    "vite": "^3.0.0"
+  }
 }

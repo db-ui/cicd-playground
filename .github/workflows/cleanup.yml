@@ -1,0 +1,28 @@
+name: Cleans all preview pages for gh-pages
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  clean:
+    name: Clean
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Get gh-pages tar
+        run: curl -LkSs https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
+        shell: bash
+      - name: ➕ Create public dir
+        run: mkdir public
+        shell: bash
+      - name: 📦 Unpack Tar
+        run: tar -xf public.tar.gz -C public --strip-components 1
+        shell: bash
+      - name: 🗑️ Clean all preview pages
+        shell: bash
+        # TODO: Add script in JS to fetch branches and remove them from public folder
+        run: curl https://api.github.com/repos/dbsystel/cicd-playground/branches
+      # TODO: Redeploy public folder to gh-pages
+
