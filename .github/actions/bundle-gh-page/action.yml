@@ -7,8 +7,12 @@ runs:
       run: mkdir public
       shell: bash
     - name: 📥 Get gh-pages tar
-      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
-      shell: bash
+      uses: robinraju/release-downloader@v1.4
+      with:
+          repository: ""
+          tag: "gh-pages"
+          tarBall: true
+          out-file-path: "public.tar.gz"
     - name: 📦 Log Tar File
       run: file public.tar.gz
       shell: bash
