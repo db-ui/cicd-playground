@@ -16,12 +16,9 @@ runs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-    - name: ↔ Log branch name
-      shell: bash
-      run: echo ${{ steps.extract_branch.outputs.branch }}
     - name: 📁 Move ./out folder to public for preview
       if: ${{ !contains( github.ref, 'main') }}
-      run: mv ./out ./public/${{ steps.extract_branch.outputs.branch }}.
+      run: mv ./out ./public/${{ steps.extract_branch.outputs.branch }}
       shell: bash
     - name: 📁 Move ./out folder to public for main
       if: ${{ contains( github.ref, 'main') }}
