@@ -16,7 +16,7 @@ runs:
       run: cat public.tar.gz
       shell: bash
     - name: 📦 Unpack Tar
-      run: tar -xf public.tar.gz -C public --strip-components 1
+      run: tar -zxvf public.tar.gz -C public --strip-components 1
       shell: bash
     - name: ↔ Extract branch name
       shell: bash
