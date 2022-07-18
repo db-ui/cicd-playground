@@ -35,5 +35,13 @@ jobs:
         if: steps.npm-cache.outputs.cache-hit != 'true'
         uses: bahmutov/npm-install@v1
 
+      - name: 📥 Download deps monorepo
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: |
+            packages/ci-cd-abcd
+            packages/ci-cd-pages
+            packages/ci-cd-test
+
 
 
