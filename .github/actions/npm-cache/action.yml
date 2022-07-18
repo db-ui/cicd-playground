@@ -3,15 +3,15 @@ description: 'Initialize NPM Cache'
 inputs:
   id:
     description: 'Used to get cache in other jobs'
-    required: true
+    required: false
     default: 'npm-cache'
   nodeModulesPath:
     description: 'Path for node_modules'
-    required: true
+    required: false
     default: './node_modules'
   packageLockPath:
     description: 'Path for package-lock.json'
-    required: true
+    required: false
     default: './package-lock.json'
 runs:
   using: "composite"
