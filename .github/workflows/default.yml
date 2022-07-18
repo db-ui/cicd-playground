@@ -16,7 +16,7 @@ jobs:
         run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages
         shell: bash
       - name: 📦 Unpack Tar
-        run: tar -zxvf public.tar.gz -C public --strip-components 1
+        run: tar -zxvf *.tar.gz -C public --strip-components 1
         shell: bash
 
 #  init:
