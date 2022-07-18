@@ -7,14 +7,10 @@ runs:
       run: mkdir public
       shell: bash
     - name: 📥 Get gh-pages tar
-      uses: robinraju/release-downloader@v1.4
-      with:
-          repository: "dbsystel/cicd-playground"
-          tag: "gh-pages"
-          tarBall: true
-          out-file-path: "public.tar.gz"
+      run: wget https://api.github.com/repos/dbsystel/cicd-playground/repo/tarball/gh-pages -o public.tar.gz
+      shell: bash
     - name: 📦 Log Tar File
-      run: file public.tar.gz
+      run: file public.tar.gz && cat public.tar.gz
       shell: bash
     - name: 📦 Unpack Tar
       run: tar -xf public.tar.gz -C public --strip-components 1

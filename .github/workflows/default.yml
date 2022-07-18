@@ -3,30 +3,37 @@ name: Test and deploy to GitHub Pages
 on: [push]
 
 jobs:
-  init:
-    uses: ./.github/workflows/00-init.yml
+  quickTest:
+    name: quickTest
+    runs-on: ubuntu-latest
+    steps:
+      - name: ➕ Bundle current gh-pages
+        uses: ./.github/actions/bundle-gh-page
 
-  init-playground:
-    uses: ./.github/workflows/00-init-playground.yml
-
-  test:
-    uses: ./.github/workflows/01-npm-test.yml
-    needs: [init]
-
-  build:
-    uses: ./.github/workflows/01-build-playground.yml
-    needs: [init-playground]
-
-  cypress:
-    uses: ./.github/workflows/01-cypress.yml
-    needs: [init]
-
-  deploy:
-    uses: ./.github/workflows/02-deploy-gh-pages.yml
-    needs: [test, cypress]
-
-  publish:
-    if: contains( github.ref, 'main')
-    uses: ./.github/workflows/02-npm-publish.yml
-    needs: [ test, cypress ]
+#  init:
+#    uses: ./.github/workflows/00-init.yml
+#
+#  init-playground:
+#    uses: ./.github/workflows/00-init-playground.yml
+#
+#  test:
+#    uses: ./.github/workflows/01-npm-test.yml
+#    needs: [init]
+#
+#  build:
+#    uses: ./.github/workflows/01-build-playground.yml
+#    needs: [init-playground]
+#
+#  cypress:
+#    uses: ./.github/workflows/01-cypress.yml
+#    needs: [init]
+#
+#  deploy:
+#    uses: ./.github/workflows/02-deploy-gh-pages.yml
+#    needs: [test, cypress]
+#
+#  publish:
+#    if: contains( github.ref, 'main')
+#    uses: ./.github/workflows/02-npm-publish.yml
+#    needs: [ test, cypress ]
 
