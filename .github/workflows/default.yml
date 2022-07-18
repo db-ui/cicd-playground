@@ -11,10 +11,12 @@ jobs:
         uses: actions/checkout@v3
       - name: ➕ Create public dir
         run: mkdir public
+        shell: bash
       - name: 📥 Get gh-pages tar
-        run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz;
+        run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
       - name: 📦 Unpack Tar
         run: tar -zxvf public.tar.gz -C public --strip-components 1
+        shell: bash
 
 #  init:
 #    uses: ./.github/workflows/00-init.yml
