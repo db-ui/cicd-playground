@@ -16,7 +16,7 @@ runs:
       id: 'npm-cache' # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
       with:
         path: ${{ inputs.nodeModulesPath }}
-        key: ${{ runner.os }}-node-${{ hashFiles(${{ inputs.packageLockPath }}) }}
+        key: ${{ runner.os }}-node-${{ hashFiles(inputs.packageLockPath) }}
         restore-keys: |
           ${{ runner.os }}-node-
 
