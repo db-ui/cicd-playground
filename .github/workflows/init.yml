@@ -14,23 +14,24 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
-      - name: ⎔ Setup node
-        uses: actions/setup-node@v3
-        with:
-            node-version: 16
-            cache: 'npm'
-            cache-dependency-path: '**/package-lock.json'
+#      - name: ⎔ Setup node
+#        uses: actions/setup-node@v3
+#        with:
+#            node-version: 16
+#            cache: 'npm'
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
-      - name: 📥 Download deps packages
-        uses: bahmutov/npm-install@v1
+        uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
-          working-directory: |
-            packages/ci-cd-abcd
-            packages/ci-cd-pages
-            packages/ci-cd-test
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 📥 Download deps
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        uses: bahmutov/npm-install@v1
 
 
 
