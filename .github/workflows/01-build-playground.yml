@@ -18,6 +18,6 @@ jobs:
           packageLockPath: './playground/pg-simple/package-lock.json'
 
       - name: 🍼 Build playground
-        run: cd playground/simple && npm run build
+        run: cd playground/pg-simple && npm run build
 
 

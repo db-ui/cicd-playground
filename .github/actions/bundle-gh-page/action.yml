@@ -6,11 +6,8 @@ runs:
     - name: ➕ Create public dir
       run: mkdir public
       shell: bash
-    - name: 📥 Get gh-pages tar
-      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
-      shell: bash
-    - name: 📦 Unpack Tar
-      run: tar -xf public.tar.gz -C public --strip-components 1
+    - name: 📥📦 Get and unpack gh-pages tar
+      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz && tar -xf public.tar.gz -C public --strip-components 1
       shell: bash
     - name: ↔ Extract branch name
       shell: bash
