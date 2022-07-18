@@ -4,7 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: 📥 Get gh-pages tar
-      run: curl -LkSs https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
+      run: curl https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
       shell: bash
     - name: ➕ Create public dir
       run: mkdir public
