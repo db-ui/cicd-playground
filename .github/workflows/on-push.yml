@@ -1,0 +1,25 @@
+name: Test and deploy to GitHub Pages
+
+on: [push]
+
+jobs:
+  init:
+    uses: ./.github/workflows/00-init.yml
+
+  test:
+    uses: ./.github/workflows/01-npm-test.yml
+    needs: [init]
+
+  cypress:
+    uses: ./.github/workflows/01-cypress.yml
+    needs: [init]
+
+  deploy:
+    uses: ./.github/workflows/02-deplay-gh-pages.yml
+    needs: [test, cypress]
+
+  publish:
+    if: contains( github.ref, 'main')
+    uses: ./.github/workflows/02-npm-publish.yml
+    needs: [ test, cypress ]
+
