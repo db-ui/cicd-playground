@@ -8,6 +8,9 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
       - uses: ./.github/actions/npm-cache'
 
       - name: ⚡ Run test
