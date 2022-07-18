@@ -13,7 +13,7 @@ jobs:
         run: mkdir public
         shell: bash
       - name: 📥 Get gh-pages tar
-        run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz; tar -zxvf public.tar.gz -C public --strip-components 1
+        run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz && tar -zxvf public.tar.gz -C public --strip-components 1
         shell: bash
 
 #  init:
