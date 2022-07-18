@@ -24,12 +24,11 @@ jobs:
       - name: 🔄 Init Cache Playground
         uses: ./.github/actions/npm-cache
         with:
-          id: 'playground-npm-cache'
           nodeModulesPath: './playground/pg-simple/node_modules'
           packageLockPath: './playground/pg-simple/package-lock.json'
 
       - name: 📥 Download deps
-        if: steps.playground-npm-cache.outputs.cache-hit != 'true'
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         uses: bahmutov/npm-install@v1
         with:
           working-directory: playground/pg-simple

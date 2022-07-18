@@ -6,13 +6,16 @@ jobs:
   init:
     uses: ./.github/workflows/00-init.yml
 
+  init-playground:
+    uses: ./.github/workflows/00-init-playground.yml
+
   test:
     uses: ./.github/workflows/01-npm-test.yml
     needs: [init]
 
   build:
     uses: ./.github/workflows/01-build-playground.yml
-    needs: [init]
+    needs: [init-playground]
 
   cypress:
     uses: ./.github/workflows/01-cypress.yml

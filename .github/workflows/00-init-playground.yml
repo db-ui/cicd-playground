@@ -1,13 +1,16 @@
-name: Build Playground
+name: Init Playground Workflow
 
 on:
   workflow_call:
 
 jobs:
-  build:
-    name: Build Playground
+  init:
+    name: Init Playground
     runs-on: ubuntu-latest
     steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
@@ -17,7 +20,11 @@ jobs:
           nodeModulesPath: './playground/pg-simple/node_modules'
           packageLockPath: './playground/pg-simple/package-lock.json'
 
-      - name: 🍼 Build playground
-        run: cd playground/simple && npm run build
+      - name: 📥 Download deps
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: playground/pg-simple
+
 
 

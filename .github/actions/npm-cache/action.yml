@@ -1,10 +1,6 @@
 name: 'NPM Cache Action'
 description: 'Initialize NPM Cache'
 inputs:
-  id:
-    description: 'Used to get cache in other jobs'
-    required: false
-    default: 'npm-cache'
   nodeModulesPath:
     description: 'Path for node_modules'
     required: false
@@ -16,14 +12,8 @@ inputs:
 runs:
   using: "composite"
   steps:
-#    - name: ⎔ Setup node
-#      uses: actions/setup-node@v3
-#      with:
-#        node-version: 16
-#        cache: 'npm'
-
     - uses: actions/cache@v3
-      id: ${{ inputs.id }} # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      id: 'npm-cache' # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
       with:
         path: ${{ inputs.nodeModulesPath }}
         key: ${{ runner.os }}-node-${{ hashFiles(${{ inputs.packageLockPath }}) }}
