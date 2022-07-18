@@ -6,8 +6,11 @@ runs:
     - name: 📥 Get gh-pages tar
       run: curl -LkSs https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
       shell: bash
+    - name: ➕ Create public dir
+      run: mkdir public
+      shell: bash
     - name: 📦 Unpack Tar
-      run: tar -xf public.tar.gz
+      run: tar -xf public.tar.gz -C public --strip-components 1
       shell: bash
     - name: ↔ Extract branch name
       shell: bash

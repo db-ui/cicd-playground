@@ -4,3 +4,5 @@ out
 dist
 .parcel-cache
 .idea
+/public.tar.gz
+/public/
