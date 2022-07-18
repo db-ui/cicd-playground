@@ -9,8 +9,15 @@ jobs:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
-      - name: ➕ Bundle current gh-pages
-        uses: ./.github/actions/bundle-gh-page
+      - name: ➕ Create public dir
+        run: mkdir public
+        shell: bash
+      - name: 📥 Get gh-pages tar
+        run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
+        shell: bash
+      - name: 📦 Unpack Tar
+        run: tar -zxvf public.tar.gz -C public --strip-components 1
+        shell: bash
 
 #  init:
 #    uses: ./.github/workflows/00-init.yml
