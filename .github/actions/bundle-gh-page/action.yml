@@ -7,16 +7,10 @@ runs:
       run: mkdir public
       shell: bash
     - name: 📥 Get gh-pages tar
-      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages -o public.tar.gz
-      shell: bash
-    - name: 📦 log Tar
-      run: file public.tar.gz
-      shell: bash
-    - name: 📦 log Tar2
-      run: cat public.tar.gz
+      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages
       shell: bash
     - name: 📦 Unpack Tar
-      run: tar -zxvf public.tar.gz -C public --strip-components 1
+      run: tar -zxvf gh-pages -C public --strip-components 1
       shell: bash
     - name: ↔ Extract branch name
       shell: bash

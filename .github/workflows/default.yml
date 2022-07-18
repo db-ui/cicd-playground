@@ -3,49 +3,30 @@ name: Test and deploy to GitHub Pages
 on: [push]
 
 jobs:
-  quickTest:
-    name: quickTest
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
-      - name: ➕ Create public dir
-        run: mkdir public
-        shell: bash
-      - name: 📥 Get gh-pages tar
-        run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages
-        shell: bash
-      - name: ➕ ls
-        run: ls
-        shell: bash
-      - name: 📦 Unpack Tar
-        run: tar -zxvf gh-pages -C public --strip-components 1
-        shell: bash
+  init:
+    uses: ./.github/workflows/00-init.yml
 
-#  init:
-#    uses: ./.github/workflows/00-init.yml
-#
-#  init-playground:
-#    uses: ./.github/workflows/00-init-playground.yml
-#
-#  test:
-#    uses: ./.github/workflows/01-npm-test.yml
-#    needs: [init]
-#
-#  build:
-#    uses: ./.github/workflows/01-build-playground.yml
-#    needs: [init-playground]
-#
-#  cypress:
-#    uses: ./.github/workflows/01-cypress.yml
-#    needs: [init]
-#
-#  deploy:
-#    uses: ./.github/workflows/02-deploy-gh-pages.yml
-#    needs: [test, cypress]
-#
-#  publish:
-#    if: contains( github.ref, 'main')
-#    uses: ./.github/workflows/02-npm-publish.yml
-#    needs: [ test, cypress ]
+  init-playground:
+    uses: ./.github/workflows/00-init-playground.yml
+
+  test:
+    uses: ./.github/workflows/01-npm-test.yml
+    needs: [init]
+
+  build:
+    uses: ./.github/workflows/01-build-playground.yml
+    needs: [init-playground]
+
+  cypress:
+    uses: ./.github/workflows/01-cypress.yml
+    needs: [init]
+
+  deploy:
+    uses: ./.github/workflows/02-deploy-gh-pages.yml
+    needs: [test, cypress]
+
+  publish:
+    if: contains( github.ref, 'main')
+    uses: ./.github/workflows/02-npm-publish.yml
+    needs: [ test, cypress ]
 
