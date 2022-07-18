@@ -1,5 +1,5 @@
-name: 'Bundle GitHub Page'
-description: 'This action bundles the current gh-page branch with the out folder'
+name: "Bundle GitHub Page"
+description: "This action bundles the current gh-page branch with the out folder"
 runs:
   using: "composite"
   steps:
@@ -16,11 +16,14 @@ runs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
+    - name: ↔ Log branch name
+      shell: bash
+      run: echo ${{ steps.extract_branch.outputs.branch }}
     - name: 📁 Move ./out folder to public for preview
-      if: contains( github.ref, 'main') != false
+      if: ${{ !contains( github.ref, 'main') }}
       run: mv ./out ./public/${{ steps.extract_branch.outputs.branch }}.
       shell: bash
     - name: 📁 Move ./out folder to public for main
-      if: contains( github.ref, 'main')
+      if: ${{ contains( github.ref, 'main') }}
       run: mv ./out ./public
       shell: bash

@@ -23,10 +23,9 @@ jobs:
 
   deploy:
     uses: ./.github/workflows/02-deploy-gh-pages.yml
-    needs: [test, cypress]
+    needs: [test, cypress, build]
 
   publish:
     if: contains( github.ref, 'main')
     uses: ./.github/workflows/02-npm-publish.yml
-    needs: [ test, cypress ]
-
+    needs: [test, cypress]
