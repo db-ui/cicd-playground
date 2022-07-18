@@ -1,5 +1,5 @@
-name: 'Test Action'
-description: 'You can use this action inside job with uses: ./.github/actions/test-action'
+name: 'NPM Cache Action'
+description: 'Initialize NPM Cache'
 runs:
   using: "composite"
   steps:

@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: ./.github/actions/test-action'
+      - uses: ./.github/actions/npm-cache'
 
       - name: 🍼 Create pages build
         run: npm run deploy:pages
