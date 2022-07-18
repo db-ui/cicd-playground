@@ -15,7 +15,7 @@ jobs:
     needs: [init]
 
   deploy:
-    uses: ./.github/workflows/02-deplay-gh-pages.yml
+    uses: ./.github/workflows/02-deploy-gh-pages.yml
     needs: [test, cypress]
 
   publish:
