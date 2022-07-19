@@ -1,7 +1,7 @@
-export default  {
-	root: '.',
-	base: '',
+export default {
+	root: ".",
+	base: "",
 	build: {
-		outDir: '../../out'
-	}
-}
+		outDir: "../../out",
+	},
+};

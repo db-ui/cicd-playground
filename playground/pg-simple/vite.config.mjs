@@ -1,4 +1,4 @@
-export default  {
-	root: '.',
-	base: '',
-}
+export default {
+	root: ".",
+	base: "",
+};
