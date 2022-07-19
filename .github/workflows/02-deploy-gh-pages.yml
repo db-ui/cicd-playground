@@ -16,8 +16,11 @@ jobs:
       - name: 🔄 Init Cache
         uses: ./.github/actions/npm-cache
 
-      - name: 🍼 Create pages build
-        run: npm run deploy:pages
+      - name: ⬇️Download build
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: out
 
       - name: ➕ Bundle current gh-pages
         uses: ./.github/actions/bundle-gh-page
@@ -27,5 +30,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-
-

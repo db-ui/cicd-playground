@@ -2,6 +2,7 @@
   "name": "@ci-cd/playground-monorepo",
   "version": "0.0.0",
   "description": "Playground for testing GitHub CI/CD",
+  "type": "module",
   "scripts": {
     "test": "npm run test --workspace=@ci-cd/test",
     "deploy:pages": "npm run build:abcd && npm run build --workspace=@ci-cd/pages",
@@ -24,6 +25,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "cypress": "^10.2.0"
+    "cypress": "^10.2.0",
+    "got": "^12.1.0"
   }
 }
