@@ -7,25 +7,28 @@ runs:
       shell: bash
       run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
       id: extract_branch
-    - name: ➕ Create temp and public dir
+    - name: ➕ Create temp or public dir
       run: |
+        echo "Create dir for branch: ${{ steps.extract_branch.outputs.branch }}"
         if echo ${{ steps.extract_branch.outputs.branch }} | grep -c "main"
         then
           mkdir temp
+          echo "Created temp dir"
         else
           mkdir public
+          echo "Created public dir"
         fi
       shell: bash
     - name: 📥 Get gh-pages tar
-      run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages
+      run: wget -q https://github.com/dbsystel/cicd-playground/tarball/gh-pages
       shell: bash
     - name: 📦 Unpack Tar
       run: |
         if echo ${{ steps.extract_branch.outputs.branch }} | grep -c "main"
         then
-          tar -zxvf gh-pages -C temp --strip-components 1
+          tar -zxf gh-pages -C temp --strip-components 1
         else
-          tar -zxvf gh-pages -C public --strip-components 1
+          tar -zxf gh-pages -C public --strip-components 1
         fi
       shell: bash
     - name: 📁 Move ./out folder to public
