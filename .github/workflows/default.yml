@@ -14,16 +14,20 @@ jobs:
     needs: [init]
 
   build:
+    uses: ./.github/workflows/01-build.yml
+    needs: [init]
+
+  build-playground:
     uses: ./.github/workflows/01-build-playground.yml
     needs: [init-playground]
 
   cypress:
     uses: ./.github/workflows/01-cypress.yml
-    needs: [init]
+    needs: [build]
 
   deploy:
     uses: ./.github/workflows/02-deploy-gh-pages.yml
-    needs: [test, cypress, build]
+    needs: [test, cypress, build-playground]
 
   publish:
     if: contains( github.ref, 'main')

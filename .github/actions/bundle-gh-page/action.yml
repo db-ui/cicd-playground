@@ -3,24 +3,38 @@ description: "This action bundles the current gh-page branch with the out folder
 runs:
   using: "composite"
   steps:
-    - name: ➕ Create public dir
-      run: mkdir public
+    - name: ↔ Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+    - name: ➕ Create temp and public dir
+      run: |
+        if echo ${{ steps.extract_branch.outputs.branch }} | grep -c "main"
+        then
+          mkdir temp
+        else
+          mkdir public
+        fi
       shell: bash
     - name: 📥 Get gh-pages tar
       run: wget https://github.com/dbsystel/cicd-playground/tarball/gh-pages
       shell: bash
     - name: 📦 Unpack Tar
-      run: tar -zxvf gh-pages -C public --strip-components 1
+      run: |
+        if echo ${{ steps.extract_branch.outputs.branch }} | grep -c "main"
+        then
+          tar -zxvf gh-pages -C temp --strip-components 1
+        else
+          tar -zxvf gh-pages -C public --strip-components 1
+        fi
       shell: bash
-    - name: ↔ Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: 📁 Move ./out folder to public for preview
-      if: ${{ !contains( github.ref, 'main') }}
-      run: mv ./out ./public/${{ steps.extract_branch.outputs.branch }}
-      shell: bash
-    - name: 📁 Move ./out folder to public for main
-      if: ${{ contains( github.ref, 'main') }}
-      run: mv ./out ./public
+    - name: 📁 Move ./out folder to public
+      run: |
+        if echo ${{ steps.extract_branch.outputs.branch }} | grep -c "main"
+        then
+          mv ./out ./public
+          mv ./temp/review ./public
+        else
+          mv ./out ./public/review/${{ steps.extract_branch.outputs.branch }}
+        fi
       shell: bash
