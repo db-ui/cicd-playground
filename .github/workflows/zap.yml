@@ -1,0 +1,17 @@
+name: "Zap"
+
+on:
+  push:
+    branches: [ "main" ]
+  schedule:
+    - cron: '25 18 * * 0'
+
+jobs:
+  zap:
+    name: Zap
+    runs-on: ubuntu-latest
+    steps:
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          target: 'https://api.github.com/repos/dbsystel/cicd-playground/branches'
