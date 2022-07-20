@@ -40,4 +40,5 @@ jobs:
           else
             export URL=$(echo https://dbsystel.github.io/cicd-playground/review/${BRANCH})
           fi
-          echo '### GH-Pages URL :rocket:\n${URL}' >> $GITHUB_STEP_SUMMARY
+          echo "URL: $URL"
+          echo "### GH-Pages URL :rocket:\n$URL" >> $GITHUB_STEP_SUMMARY
