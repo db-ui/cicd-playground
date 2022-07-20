@@ -1,19 +1,20 @@
-name: 'Download Tar Artifact'
-description: 'Downloads an artifact and unzips it'
+name: "Download Tar Artifact"
+description: "Downloads an artifact and unzips it"
 inputs:
   name:
-    description: 'Name for artifact'
+    description: "Name for artifact"
     required: true
   path:
-    description: 'Path for unzip'
+    description: "Path for unzip"
     required: true
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: ⬇ Download build
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.name }}
+        path: ${{ inputs.name }}.tar.gz
 
     - name: 📁 Create path folder
       run: |
