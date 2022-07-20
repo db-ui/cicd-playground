@@ -44,7 +44,7 @@ runs:
             mkdir ./public/review
           fi
           if [ -d ./public/review/${{ steps.extract_branch.outputs.branch }} ]; then
-            rm ./public/review/${{ steps.extract_branch.outputs.branch }}
+            rm -rf  ./public/review/${{ steps.extract_branch.outputs.branch }}
           fi
           mv ./out ./public/review/${{ steps.extract_branch.outputs.branch }}
         fi
