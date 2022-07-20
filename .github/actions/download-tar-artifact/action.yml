@@ -21,6 +21,8 @@ runs:
         if [ ! -d ${{ inputs.path }}  ]; then
            mkdir ${{ inputs.path }}
         fi
+        ls
+        ls ${{ inputs.name }}.tar.gz
       shell: bash
 
     - name: 📦 Unpack Tar
