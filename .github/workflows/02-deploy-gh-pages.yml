@@ -33,12 +33,12 @@ jobs:
 
       - name: 🖨️ Print gh-pages url
         run: |
-          export BRANCH=$(echo ${GITHUB_REF#refs/heads/})
+          export BRANCH=${GITHUB_REF#refs/heads/}
           if echo ${BRANCH} | grep -c "main"
           then
-            export URL=$(echo https://dbsystel.github.io/cicd-playground)
+            export URL=https://dbsystel.github.io/cicd-playground
           else
-            export URL=$(echo https://dbsystel.github.io/cicd-playground/review/${BRANCH})
+            export URL=https://dbsystel.github.io/cicd-playground/review/${BRANCH}
           fi
           echo "URL: $URL"
-          echo "### GH-Pages URL :rocket:\n$URL" >> $GITHUB_STEP_SUMMARY
+          echo "### GH-Pages URL :rocket:<br>$URL" >> $GITHUB_STEP_SUMMARY
