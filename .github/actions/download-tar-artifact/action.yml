@@ -14,7 +14,6 @@ runs:
       uses: actions/download-artifact@v3
       with:
         name: ${{ inputs.name }}
-        path: ${{ inputs.name }}.tar.gz
 
     - name: 📁 Create path folder
       run: |
@@ -22,9 +21,8 @@ runs:
            mkdir ${{ inputs.path }}
         fi
         ls
-        ls ${{ inputs.name }}.tar.gz
       shell: bash
 
     - name: 📦 Unpack Tar
-      run: tar -zxf ${{ inputs.name }}.tar.gz -C ${{ inputs.path }} --strip-components 1
+      run: tar -zxf ${{ inputs.name }} -C ${{ inputs.path }} --strip-components 1
       shell: bash
