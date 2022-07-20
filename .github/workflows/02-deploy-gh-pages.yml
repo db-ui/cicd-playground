@@ -41,4 +41,4 @@ jobs:
             export URL=https://dbsystel.github.io/cicd-playground/review/${BRANCH}
           fi
           echo "URL: $URL"
-          echo "### GH-Pages URL :rocket:<br>$URL" >> $GITHUB_STEP_SUMMARY
+          echo "### GH-Pages URL :rocket: <br> > [$URL]($URL){:target="_blank"}" >> $GITHUB_STEP_SUMMARY
