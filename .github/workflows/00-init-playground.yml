@@ -14,12 +14,6 @@ jobs:
       - name: ⬇ Checkout repo
         uses: actions/checkout@v3
 
-      - name: 🔄 Init Cache Playground
-        uses: ./.github/actions/npm-cache
-        with:
-          nodeModulesPath: "./playground/pg-simple/node_modules"
-          packageLockPath: "./playground/pg-simple/package-lock.json"
-
       - name: 📥 Download deps
         if: steps.npm-cache.outputs.cache-hit != 'true'
         uses: bahmutov/npm-install@v1
