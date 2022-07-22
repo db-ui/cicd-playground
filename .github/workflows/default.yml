@@ -1,6 +1,8 @@
 name: Test and deploy to GitHub Pages
 
-on: [push]
+# on: [push]
+on:
+  workflow_call:
 
 jobs:
   init:

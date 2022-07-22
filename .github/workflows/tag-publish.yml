@@ -6,29 +6,37 @@ on:
       - "*"
 
 jobs:
-  init:
-    uses: ./.github/workflows/00-init.yml
+  logtag:
+    name: Tag Name
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Tag Name
+      run: echo ${GITHUB_REF##*/}
 
-  init-playground:
-    uses: ./.github/workflows/00-init-playground.yml
+  # init:
+  #   uses: ./.github/workflows/00-init.yml
 
-  test:
-    uses: ./.github/workflows/01-npm-test.yml
-    needs: [init]
+  # init-playground:
+  #   uses: ./.github/workflows/00-init-playground.yml
 
-  build:
-    uses: ./.github/workflows/01-build.yml
-    needs: [init]
+  # test:
+  #   uses: ./.github/workflows/01-npm-test.yml
+  #   needs: [init]
 
-  build-playground:
-    uses: ./.github/workflows/01-build-playground.yml
-    needs: [init-playground]
+  # build:
+  #   uses: ./.github/workflows/01-build.yml
+  #   needs: [init]
 
-  cypress:
-    uses: ./.github/workflows/01-cypress.yml
-    needs: [build]
+  # build-playground:
+  #   uses: ./.github/workflows/01-build-playground.yml
+  #   needs: [init-playground]
 
-  publish:
-    needs: [test, cypress]
-    # if: contains( github.ref, 'test-package-publishing')
-    uses: ./.github/workflows/02-npm-publish.yml
+  # cypress:
+  #   uses: ./.github/workflows/01-cypress.yml
+  #   needs: [build]
+
+  # publish:
+  #   needs: [test, cypress]
+  #   # if: contains( github.ref, 'test-package-publishing')
+  #   uses: ./.github/workflows/02-npm-publish.yml
