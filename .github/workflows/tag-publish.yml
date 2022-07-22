@@ -1,6 +1,9 @@
-name: Test and deploy to GitHub Pages
+name: Test and publish to registries after new tag
 
-on: [push]
+on:
+  push:
+    tags:
+      - "*"
 
 jobs:
   init:
@@ -25,11 +28,7 @@ jobs:
     uses: ./.github/workflows/01-cypress.yml
     needs: [build]
 
-  deploy:
-    uses: ./.github/workflows/02-deploy-gh-pages.yml
-    needs: [test, cypress, build-playground]
-
-  # publish:
-  #   needs: [test, cypress]
-  #   if: contains( github.ref, 'main')
-  #   uses: ./.github/workflows/02-npm-publish.yml
+  publish:
+    needs: [test, cypress]
+    if: contains( github.ref, 'test-package-publishing')
+    uses: ./.github/workflows/02-npm-publish.yml
