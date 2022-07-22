@@ -25,9 +25,9 @@ jobs:
     uses: ./.github/workflows/01-cypress.yml
     needs: [build]
 
-  deploy:
-    uses: ./.github/workflows/02-deploy-gh-pages.yml
-    needs: [test, cypress, build-playground]
+  # deploy:
+  #   uses: ./.github/workflows/02-deploy-gh-pages.yml
+  #   needs: [test, cypress, build-playground]
 
   # publish:
   #   needs: [test, cypress]
