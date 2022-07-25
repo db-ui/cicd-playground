@@ -10,7 +10,7 @@ on:
 jobs:
   logtag:
     name: Tag Name
-    if: startsWith(github.event.ref, 'refs/tags/v')
+    # if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Log Tag Name
