@@ -63,5 +63,7 @@ jobs:
       - name: Publish stable packages
         run: |
           echo "We are running on: " ${{github.event.release.target_commitish}}
-          SEMVER_VERSION=npx find-versions-cli ${{ github.event.release.tag_name }}
-          echo "Semver stable version $SEMVER_VERSION"
+          SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
+          VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION")
+          echo "Semver stable version unclean $SEMVER_VERSION"
+          echo "Semver stable version valid $VALID_SEMVER_VERSION"
