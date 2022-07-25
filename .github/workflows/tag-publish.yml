@@ -11,6 +11,7 @@ jobs:
   logtag:
     name: Tag Name
     # if: startsWith(github.event.ref, 'refs/tags/v')
+    if: github.event.release.prerelease === true
     runs-on: ubuntu-latest
     env:
       RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
