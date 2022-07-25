@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Log Tag Name
-        run: echo ${GITHUB_REF##*/}
+        run: |
+          echo ${GITHUB_REF##*/}
+          echo ${github.event_name}
 
   # init:
   #   uses: ./.github/workflows/00-init.yml
