@@ -48,7 +48,12 @@ jobs:
           echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
           echo "$RELEASE_CONTEXT"
 
-  # publish:
-  #   needs: [test, cypress]
-  #   # if: contains( github.ref, 'test-package-publishing')
-  #   uses: ./.github/workflows/02-npm-publish.yml
+  onlyonmain:
+    name: Publish stable packages
+    if: contains( github.ref, 'test-package-publishing')
+    # if: github.ref == 'refs/heads/test-package-publishing'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish stable packages
+        run: |
+          echo "We are on: " ${github.ref}
