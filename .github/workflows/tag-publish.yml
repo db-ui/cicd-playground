@@ -52,7 +52,7 @@ jobs:
           echo "RELEASE_CONTEXT: $RELEASE_CONTEXT"
           GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-7)
           echo "GITHUB_SHA_SHORT $GITHUB_SHA_SHORT"
-          SEMVER_VERSION=npx find-versions-cli ${{ github.event.release.tag_name }}
+          SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
           echo "Semver experimental version $SEMVER_VERSION-$GITHUB_SHA_SHORT"
 
   publishstable:
