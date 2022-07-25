@@ -56,4 +56,4 @@ jobs:
     steps:
       - name: Publish stable packages
         run: |
-          echo "We are running on: " ${github.event.release.target_commitish}
+          echo "We are running on: " ${{github.event.release.target_commitish}}
