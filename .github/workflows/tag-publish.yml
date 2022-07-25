@@ -50,8 +50,8 @@ jobs:
 
   onlyonmain:
     name: Publish stable packages
-    if: contains( github.ref, 'test-package-publishing')
-    # if: github.ref == 'refs/heads/test-package-publishing'
+    # if: contains( github.ref, 'test-package-publishing')
+    if: github.ref == 'refs/heads/test-package-publishing'
     runs-on: ubuntu-latest
     steps:
       - name: Publish stable packages
