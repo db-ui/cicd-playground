@@ -49,7 +49,7 @@ jobs:
           echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
           echo "RELEASE_CONTEXT: $RELEASE_CONTEXT"
           GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-7)
-          echo "GIT_SHA_SHORT $GIT_SHA_SHORT"
+          echo "GITHUB_SHA_SHORT $GITHUB_SHA_SHORT"
           npx find-versions-cli ${{ github.event.release.tag_name }}
 
   publishstable:
