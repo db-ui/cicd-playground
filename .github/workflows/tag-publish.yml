@@ -10,6 +10,7 @@ on:
 jobs:
   logtag:
     name: Tag Name
+    if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Log Tag Name
@@ -18,7 +19,10 @@ jobs:
           echo "event name is:" ${{ github.event_name }}
           echo "event type is:" ${{ github.event.action }}
           echo "event release is:" ${{ github.event.release }}
+          echo "event release tag_name is:" ${{ github.event.release.tag_name }}
           echo "event prerelease is:" ${{ github.event.release.prerelease }}
+          echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
+          echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
 
   # init:
   #   uses: ./.github/workflows/00-init.yml
