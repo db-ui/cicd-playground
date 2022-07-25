@@ -32,7 +32,7 @@ jobs:
     # needs: [test, cypress]
     # if: startsWith(github.event.ref, 'refs/tags/v')
     if: |
-      github.event.release.prerelease == true && startsWith(github.ref, 'refs/tags/v')
+      startsWith(github.ref, 'refs/tags/v') && github.event.release.prerelease == true
     runs-on: ubuntu-latest
     env:
       RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
@@ -50,8 +50,7 @@ jobs:
 
   onlyonmain:
     name: Publish stable packages
-    # if: contains( github.ref, 'test-package-publishing')
-    if: github.event.release.target_commitish == 'test-package-publishing'
+    if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
       - name: Publish stable packages
