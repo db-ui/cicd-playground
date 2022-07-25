@@ -1,6 +1,6 @@
 {
   "name": "@ci-cd/playground-monorepo",
-  "version": "0.0.0",
+  "version": "1.0.2-bla.2",
   "description": "Playground for testing GitHub CI/CD",
   "type": "module",
   "scripts": {
