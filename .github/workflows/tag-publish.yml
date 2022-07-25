@@ -51,9 +51,9 @@ jobs:
   onlyonmain:
     name: Publish stable packages
     # if: contains( github.ref, 'test-package-publishing')
-    # if: github.ref == 'refs/heads/test-package-publishing'
+    if: github.event.release.target_commitish == test-package-publishing
     runs-on: ubuntu-latest
     steps:
       - name: Publish stable packages
         run: |
-          echo ${GITHUB_REF}
+          echo "We are running on: " ${github.event.release.target_commitish}
