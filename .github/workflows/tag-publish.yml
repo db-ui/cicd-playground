@@ -12,7 +12,8 @@ jobs:
       - name: Log Tag Name
         run: |
           echo ${GITHUB_REF##*/}
-          echo ${github.event_name}
+          echo "event name is:" ${{ github.event_name }}
+          echo "event type is:" ${{ github.event.action }}
 
   # init:
   #   uses: ./.github/workflows/00-init.yml
