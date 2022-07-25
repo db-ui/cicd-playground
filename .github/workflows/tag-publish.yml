@@ -50,6 +50,7 @@ jobs:
           echo "$RELEASE_CONTEXT"
           GIT_HASH_SHORT=$(git rev-parse --short "$GITHUB_SHA")
           echo "GIT_HASH_SHORT $GIT_HASH_SHORT"
+          npx find-versions-cli ${{ github.event.release.tag_name }}
 
   onlyonmain:
     name: Publish stable packages
