@@ -36,6 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
+
     steps:
       - name: Log Tag Name
         run: |
@@ -47,6 +48,8 @@ jobs:
           echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
           echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
           echo "$RELEASE_CONTEXT"
+          GIT_HASH_SHORT=$(git rev-parse --short "$GITHUB_SHA")
+          echo "GIT_HASH_SHORT $GIT_HASH_SHORT"
 
   onlyonmain:
     name: Publish stable packages
@@ -56,3 +59,4 @@ jobs:
       - name: Publish stable packages
         run: |
           echo "We are running on: " ${{github.event.release.target_commitish}}
+          npx find-versions-cli ${{ github.event.release.tag_name }}
