@@ -18,7 +18,7 @@ jobs:
           echo ${GITHUB_REF##*/}
           echo "event name is:" ${{ github.event_name }}
           echo "event type is:" ${{ github.event.action }}
-          echo "event release is:" ${{ github.event.release }}
+          echo "event release is:" ${{ JSON.stringify(github.event.release) }}
           echo "event release tag_name is:" ${{ github.event.release.tag_name }}
           echo "event prerelease is:" ${{ github.event.release.prerelease }}
           echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
