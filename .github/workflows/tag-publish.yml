@@ -56,4 +56,4 @@ jobs:
     steps:
       - name: Publish stable packages
         run: |
-          echo "We are on: " ${github.ref}
+          echo ${GITHUB_REF}
