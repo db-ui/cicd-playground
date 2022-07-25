@@ -12,8 +12,8 @@ jobs:
     name: Tag Name
     # if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
-    env:
-      RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
+    # env:
+    #   RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
     steps:
       - name: Log Tag Name
         run: |
@@ -26,7 +26,7 @@ jobs:
           echo "event prerelease is:" ${{ github.event.release.prerelease }}
           echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
           echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
-          echo "$RELEASE_CONTEXT"
+          # echo "$RELEASE_CONTEXT"
 
   # init:
   #   uses: ./.github/workflows/00-init.yml
