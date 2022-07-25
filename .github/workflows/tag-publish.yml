@@ -1,32 +1,10 @@
 name: Test and publish to registries after new tag
 
-# on:
-#   push:
-#     tags: ["v[0-9].[0-9]+.[0-9]+"]
 on:
   release:
     types: [published]
 
 jobs:
-  logtag:
-    name: Tag Name
-    # if: startsWith(github.event.ref, 'refs/tags/v')
-    if: ${{github.event.release.prerelease == true }}
-    runs-on: ubuntu-latest
-    env:
-      RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
-    steps:
-      - name: Log Tag Name
-        run: |
-          echo ${GITHUB_REF##*/}
-          echo "event name is:" ${{ github.event_name }}
-          echo "event type is:" ${{ github.event.action }}
-          echo "event release tag_name is:" ${{ github.event.release.tag_name }}
-          echo "event prerelease is:" ${{ github.event.release.prerelease }}
-          echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
-          echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
-          echo "$RELEASE_CONTEXT"
-
   # init:
   #   uses: ./.github/workflows/00-init.yml
 
@@ -48,6 +26,26 @@ jobs:
   # cypress:
   #   uses: ./.github/workflows/01-cypress.yml
   #   needs: [build]
+
+  logtag:
+    name: Tag Name
+    # needs: [test, cypress]
+    # if: startsWith(github.event.ref, 'refs/tags/v')
+    if: ${{github.event.release.prerelease == true }} && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
+    steps:
+      - name: Log Tag Name
+        run: |
+          echo ${GITHUB_REF##*/}
+          echo "event name is:" ${{ github.event_name }}
+          echo "event type is:" ${{ github.event.action }}
+          echo "event release tag_name is:" ${{ github.event.release.tag_name }}
+          echo "event prerelease is:" ${{ github.event.release.prerelease }}
+          echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
+          echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
+          echo "$RELEASE_CONTEXT"
 
   # publish:
   #   needs: [test, cypress]
