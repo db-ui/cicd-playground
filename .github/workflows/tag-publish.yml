@@ -3,7 +3,7 @@ name: Test and publish to registries after new tag
 on:
   push:
     tags:
-      - "*"
+      - "v*.*.*"
 
 jobs:
   logtag:
