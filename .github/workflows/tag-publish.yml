@@ -30,10 +30,6 @@ jobs:
       startsWith(github.ref, 'refs/tags/v') &&
       github.event.release.prerelease == true
     runs-on: ubuntu-latest
-    env:
-      RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
-      TEST_CONTEXT: ${{ toJson(github.event) }}
-
     steps:
       - name: Publish experimental Packages to NPM
         run: |
@@ -56,7 +52,7 @@ jobs:
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
-          echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli@2.2.2)" >> $GITHUB_ENV
+          echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli)" >> $GITHUB_ENV
 
       - uses: actions/github-script@v6
         with:
@@ -96,10 +92,10 @@ jobs:
         run: |
           echo "publish latest to github"
 
-  createchangelognext:
+  changelognext:
     uses: ./.github/workflows/changelog.yml
     needs: [publishnextgithub, publishnextnpm]
 
-  createchangeloglatest:
+  changeloglatest:
     uses: ./.github/workflows/changelog.yml
     needs: [publishlatestgithub, publishlatestnpm]

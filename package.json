@@ -25,7 +25,9 @@
     "packages/*"
   ],
   "devDependencies": {
+    "conventional-changelog-cli": "^2.2.2",
     "cypress": "^10.2.0",
+    "find-versions-cli": "^4.0.0",
     "got": "^12.1.0"
   }
 }
