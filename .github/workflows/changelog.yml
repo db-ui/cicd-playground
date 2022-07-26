@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Create changelog
         run: |
-          echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli@2.2.2)" >> $GITHUB_ENV
+          echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli -h -p angular -r 0)" >> $GITHUB_ENV
 
       - uses: actions/github-script@v6
         with:

@@ -36,6 +36,8 @@ jobs:
           GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-7)
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
           echo "Semver experimental version $SEMVER_VERSION-$GITHUB_SHA_SHORT"
+          npm version --no-git-tag-version $SEMVER_VERSION-$GITHUB_SHA_SHORT --workspace=@ci-cd/abcd
+          npm run publish:abcd
 
   publishlatestnpm:
     name: Publish stable packages to NPM
@@ -53,6 +55,8 @@ jobs:
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
           echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli)" >> $GITHUB_ENV
+          npm version --no-git-tag-version $VALID_SEMVER_VERSION --workspace=@ci-cd/abcd
+          npm run publish:abcd
 
       - uses: actions/github-script@v6
         with:
