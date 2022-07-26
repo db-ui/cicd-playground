@@ -31,6 +31,9 @@ jobs:
       github.event.release.prerelease == true
     runs-on: ubuntu-latest
     steps:
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
+
       - name: Publish experimental Packages to NPM
         run: |
           GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-7)
@@ -48,6 +51,9 @@ jobs:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
 
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
+
       - name: Publish stable packages
         run: |
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
@@ -57,16 +63,6 @@ jobs:
           echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli)" >> $GITHUB_ENV
           npm version --no-git-tag-version $VALID_SEMVER_VERSION --workspace=@ci-cd/abcd
           npm run publish:abcd
-
-      - uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.repos.updateRelease({
-              owner: context.payload.repository.owner.login,
-              repo: context.payload.repository.name,
-              release_id: context.payload.release.id,
-              body: process.env.CHANGELOG_TEXT
-            })
 
   publishnextgithub:
     name: Publish experimental Packages to GitHub registry
@@ -79,6 +75,9 @@ jobs:
       github.event.release.prerelease == true
     runs-on: ubuntu-latest
     steps:
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
+
       - name: Publish experimental Packages to GitHub
         run: |
           echo "publish next to github"
@@ -91,6 +90,9 @@ jobs:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
+
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
 
       - name: Publish stable Packages to GitHub
         run: |
