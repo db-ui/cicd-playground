@@ -47,6 +47,9 @@ jobs:
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
       - name: Publish stable packages
         run: |
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
@@ -86,6 +89,9 @@ jobs:
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
       - name: Publish stable Packages to GitHub
         run: |
           echo "publish latest to github"
