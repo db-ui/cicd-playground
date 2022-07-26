@@ -63,7 +63,7 @@ jobs:
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     env:
-      TEST_MSG: "REPLACE_ME"
+      CHANGELOG_TEXT: "REPLACE_ME"
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
@@ -72,6 +72,7 @@ jobs:
         run: |
           echo "We are running on: " ${{github.event.release.target_commitish}}
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
+          CHANGELOG_TEXT=$(npx conventional-changelog-cli@2.2.2)
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
@@ -83,5 +84,5 @@ jobs:
               owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
               release_id: context.payload.release.id,
-              body: process.env.TEST_MSG
+              body: process.env.CHANGELOG_TEXT
             })
