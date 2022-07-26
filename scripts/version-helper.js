@@ -4,4 +4,4 @@ const [semver, prerelease] = version.split('-');
 if (prerelease) {
 	throw new Error('This seems to be a prerelease - will not publish');
 }
-console.log('Version is: ', version);
+console.log(version);
