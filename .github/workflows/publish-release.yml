@@ -54,12 +54,18 @@ jobs:
       - name: 🔄 Init Cache
         uses: ./.github/actions/npm-cache
 
-      - name: Publish stable packages
+      - name: Set the Env
         run: |
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
+          echo "VALID_SEMVER_VERSION=$(echo $VALID_SEMVER_VERSION)" >> $GITHUB_ENV
+
+      - name: Publish stable packages
+        run: |
+          echo "version is:"
+          echo ${{env.VALID_SEMVER_VERSION }}
           npm version --no-git-tag-version ${{ env.VALID_SEMVER_VERSION }} --workspace=@ci-cd/abcd
           npm run publish:abcd
 
