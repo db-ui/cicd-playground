@@ -77,9 +77,11 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            console.log(context)
+            console.log("Context: ", context.payload)
+            console.log("owner: ", context.payload.owner)
+
             github.rest.repos.updateRelease({
-              owner: context.payload.owner.login,
+              owner: "dbsystel",
               repo: context.payload.repository.name,
               release_id: context.payload.release.id,
               body: '👋 woo hoo!'
