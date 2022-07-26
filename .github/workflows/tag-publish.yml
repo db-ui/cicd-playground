@@ -77,7 +77,7 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            rest.repos.updateRelease({
+            github.rest.repos.updateRelease({
               owner: context.repository.owner,
               repo: context.repository.name,
               release_id: context.release.id
