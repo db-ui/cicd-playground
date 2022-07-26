@@ -8,9 +8,6 @@ jobs:
   init:
     uses: ./.github/workflows/00-init.yml
 
-  init-playground:
-    uses: ./.github/workflows/00-init-playground.yml
-
   test:
     uses: ./.github/workflows/01-npm-test.yml
     needs: [init]
@@ -19,16 +16,12 @@ jobs:
     uses: ./.github/workflows/01-build.yml
     needs: [init]
 
-  build-playground:
-    uses: ./.github/workflows/01-build-playground.yml
-    needs: [init-playground]
-
   cypress:
     uses: ./.github/workflows/01-cypress.yml
     needs: [build]
 
-  publishnext:
-    name: Publish experimental Packages
+  publishnextnpm:
+    name: Publish experimental Packages to NPM
     needs: [test, cypress]
     # Only publish if not on the main branch, the release tag starts with a "v"
     # and is flagged as a prerelease
@@ -42,34 +35,20 @@ jobs:
       TEST_CONTEXT: ${{ toJson(github.event) }}
 
     steps:
-      - name: Publish experimental Packages
+      - name: Publish experimental Packages to NPM
         run: |
-          echo ${GITHUB_REF##*/}
-          echo "event name is:" ${{ github.event_name }}
-          echo "event type is:" ${{ github.event.action }}
-          echo "event release tag_name is:" ${{ github.event.release.tag_name }}
-          echo "event prerelease is:" ${{ github.event.release.prerelease }}
-          echo "event asset dl is:" ${{ github.event.release.assets[0].browser_download_url }}
-          echo "event asset dl type is:" ${{ github.event.release.assets[0].content_type }}
-          echo "RELEASE_CONTEXT: $RELEASE_CONTEXT"
-          echo "TEST_CONTEXT: $TEST_CONTEXT"
           GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-7)
-          echo "GITHUB_SHA_SHORT $GITHUB_SHA_SHORT"
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
           echo "Semver experimental version $SEMVER_VERSION-$GITHUB_SHA_SHORT"
 
-  publishlatest:
-    name: Publish stable packages
+  publishlatestnpm:
+    name: Publish stable packages to NPM
     needs: [test, cypress]
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Checkout repo
-        uses: actions/checkout@v3
-
       - name: Publish stable packages
         run: |
-          echo "We are running on: " ${{github.event.release.target_commitish}}
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
@@ -85,3 +64,36 @@ jobs:
               release_id: context.payload.release.id,
               body: process.env.CHANGELOG_TEXT
             })
+
+  publishnextgithub:
+    name: Publish experimental Packages to GitHub registry
+    needs: [test, cypress]
+    # Only publish if not on the main branch, the release tag starts with a "v"
+    # and is flagged as a prerelease
+    if: |
+      github.event.release.target_commitish != 'main' &&
+      startsWith(github.ref, 'refs/tags/v') &&
+      github.event.release.prerelease == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish experimental Packages to GitHub
+        run: |
+          echo "publish next to github"
+
+  publishlatestgithub:
+    name: Publish stable packages to GitHub registry
+    needs: [test, cypress]
+    if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish stable Packages to GitHub
+        run: |
+          echo "publish latest to github"
+
+  createchangelognext:
+    uses: ./.github/workflows/changelog.yml
+    needs: [publishnextgithub, publishnextnpm]
+
+  createchangeloglatest:
+    uses: ./.github/workflows/changelog.yml
+    needs: [publishlatestgithub, publishlatestnpm]
