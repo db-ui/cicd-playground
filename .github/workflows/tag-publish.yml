@@ -73,10 +73,11 @@ jobs:
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
+
       - uses: actions/github-script@v6
         with:
           script: |
-              octokit.rest.repos.updateRelease({
+            rest.repos.updateRelease({
               owner: context.repository.owner,
               repo: context.repository.name,
               release_id: context.release.id
