@@ -61,6 +61,9 @@ jobs:
   publishstable:
     name: Publish stable packages
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
+    env:
+      RELEASE_CONTEXT: ${{ toJson(github.event.release) }}
+      TEST_CONTEXT: ${{ toJson(github.event) }}
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
@@ -73,13 +76,14 @@ jobs:
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
+          echo "TEST_CONTEXT: $TEST_CONTEXT"
 
       - uses: actions/github-script@v6
         with:
           script: |
             github.rest.repos.updateRelease({
-              owner: github.event.repository.owner,
-              repo: github.event.repository.name,
+              owner,
+              repo,
               release_id: github.event.release.id,
               body: '👋 woo hoo!'
             })
