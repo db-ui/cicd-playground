@@ -77,10 +77,14 @@ jobs:
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
           echo "TEST_CONTEXT: $TEST_CONTEXT"
+          echo "Repository: " ${{github.event.repository}}
+          echo "Owner: " ${{github.event.repository.owner}}
+          echo "Login: " ${{github.event.repository.owner.login}}
 
       - uses: actions/github-script@v6
         with:
           script: |
+            console.log(context)
             github.rest.repos.updateRelease({
               owner: github.event.repository.owner.login,
               repo: github.event.repository.name,
