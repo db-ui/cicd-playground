@@ -5,24 +5,24 @@ on:
     types: [published]
 
 jobs:
-  init:
-    uses: ./.github/workflows/00-init.yml
+  # init:
+  #   uses: ./.github/workflows/00-init.yml
 
-  test:
-    uses: ./.github/workflows/01-npm-test.yml
-    needs: [init]
+  # test:
+  #   uses: ./.github/workflows/01-npm-test.yml
+  #   needs: [init]
 
-  build:
-    uses: ./.github/workflows/01-build.yml
-    needs: [init]
+  # build:
+  #   uses: ./.github/workflows/01-build.yml
+  #   needs: [init]
 
-  cypress:
-    uses: ./.github/workflows/01-cypress.yml
-    needs: [build]
+  # cypress:
+  #   uses: ./.github/workflows/01-cypress.yml
+  #   needs: [build]
 
   publishnextnpm:
     name: Publish experimental Packages to NPM
-    needs: [test, cypress]
+    # needs: [test, cypress]
     # Only publish if not on the main branch, the release tag starts with a "v"
     # and is flagged as a prerelease
     if: |
@@ -44,7 +44,7 @@ jobs:
 
   publishlatestnpm:
     name: Publish stable packages to NPM
-    needs: [test, cypress]
+    # needs: [test, cypress]
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
@@ -61,12 +61,12 @@ jobs:
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
           echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli)" >> $GITHUB_ENV
-          npm version --no-git-tag-version $VALID_SEMVER_VERSION --workspace=@ci-cd/abcd
+          npm version --no-git-tag-version 0.0.22 --workspace=@ci-cd/abcd
           npm run publish:abcd
 
   publishnextgithub:
     name: Publish experimental Packages to GitHub registry
-    needs: [test, cypress]
+    # needs: [test, cypress]
     # Only publish if not on the main branch, the release tag starts with a "v"
     # and is flagged as a prerelease
     if: |
@@ -84,7 +84,7 @@ jobs:
 
   publishlatestgithub:
     name: Publish stable packages to GitHub registry
-    needs: [test, cypress]
+    # needs: [test, cypress]
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:

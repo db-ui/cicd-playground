@@ -8,6 +8,9 @@ jobs:
     name: Update Release with Changelog
     runs-on: ubuntu-latest
     steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+
       - name: Create changelog
         run: |
           echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli -h -p angular -r 0)" >> $GITHUB_ENV
