@@ -80,6 +80,6 @@ jobs:
             github.rest.repos.updateRelease({
               owner: context.repository.owner,
               repo: context.repository.name,
-              release_id: context.release.id
+              release_id: context.release.id,
               body: '👋 woo hoo!'
             })
