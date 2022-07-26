@@ -14,7 +14,7 @@ jobs:
       - name: Create changelog
         run: |
           echo 'CHANGELOG_TEXT<<EOF' >> $GITHUB_ENV
-          npx conventional-changelog-cli -h -p angular -r 0) >> $GITHUB_ENV
+          npx conventional-changelog-cli -h -p angular -r 0 >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
       - uses: actions/github-script@v6
