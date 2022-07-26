@@ -27,7 +27,11 @@ jobs:
   #   uses: ./.github/workflows/01-cypress.yml
   #   needs: [build]
 
+  default:
+    uses: ./.github/workflows/default.yml
+
   publishnext:
+    needs: [default]
     name: Publish experimental Packages
     # needs: [test, cypress]
     # Only publish if not on the main branch, the release tag starts with a "v"
@@ -58,12 +62,11 @@ jobs:
           SEMVER_VERSION=$(npx find-versions-cli ${{ github.event.release.tag_name }})
           echo "Semver experimental version $SEMVER_VERSION-$GITHUB_SHA_SHORT"
 
-  publishstable:
+  publishlatest:
+    needs: [default]
     name: Publish stable packages
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
-    # env:
-    #   CHANGELOG_TEXT: "REPLACE_ME"
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
