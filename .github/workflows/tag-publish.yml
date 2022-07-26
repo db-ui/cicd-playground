@@ -78,8 +78,8 @@ jobs:
         with:
           script: |
             github.rest.repos.updateRelease({
-              owner: context.repository.owner,
-              repo: context.repository.name,
-              release_id: context.release.id,
+              owner: github.event.repository.owner,
+              repo: github.event.repository.name,
+              release_id: github.event.release.id,
               body: '👋 woo hoo!'
             })
