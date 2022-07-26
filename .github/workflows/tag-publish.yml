@@ -63,7 +63,7 @@ jobs:
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     env:
-      TEST_MSG: "asdf test"
+      TEST_MSG: "REPLACE_ME"
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v3
@@ -79,12 +79,8 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            console.log("Context: ", context.payload)
-            console.log("repo: ", context.payload.repository)
-            console.log("owner: ", context.payload.repository.owner)
-
             github.rest.repos.updateRelease({
-              owner: "dbsystel",
+              owner: context.payload.repository.owner.login,
               repo: context.payload.repository.name,
               release_id: context.payload.release.id,
               body: process.env.TEST_MSG
