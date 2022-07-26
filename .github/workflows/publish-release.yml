@@ -60,8 +60,7 @@ jobs:
           VALID_SEMVER_VERSION=$(node scripts/version-helper.js $SEMVER_VERSION)
           echo "Semver stable version unclean $SEMVER_VERSION"
           echo "Semver stable version valid $VALID_SEMVER_VERSION"
-          echo "CHANGELOG_TEXT=$(npx conventional-changelog-cli)" >> $GITHUB_ENV
-          npm version --no-git-tag-version 0.0.22 --workspace=@ci-cd/abcd
+          npm version --no-git-tag-version ${{ env.VALID_SEMVER_VERSION }} --workspace=@ci-cd/abcd
           npm run publish:abcd
 
   publishnextgithub:
