@@ -33,7 +33,6 @@ jobs:
     # Only publish if not on the main branch, the release tag starts with a "v"
     # and is flagged as a prerelease
     if: |
-      github.event.release.target_commitish != 'main' &&
       startsWith(github.ref, 'refs/tags/v') &&
       github.event.release.prerelease == true
     runs-on: ubuntu-latest
