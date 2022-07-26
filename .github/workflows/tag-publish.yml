@@ -5,35 +5,31 @@ on:
     types: [published]
 
 jobs:
-  # init:
-  #   uses: ./.github/workflows/00-init.yml
+  init:
+    uses: ./.github/workflows/00-init.yml
 
-  # init-playground:
-  #   uses: ./.github/workflows/00-init-playground.yml
+  init-playground:
+    uses: ./.github/workflows/00-init-playground.yml
 
-  # test:
-  #   uses: ./.github/workflows/01-npm-test.yml
-  #   needs: [init]
+  test:
+    uses: ./.github/workflows/01-npm-test.yml
+    needs: [init]
 
-  # build:
-  #   uses: ./.github/workflows/01-build.yml
-  #   needs: [init]
+  build:
+    uses: ./.github/workflows/01-build.yml
+    needs: [init]
 
-  # build-playground:
-  #   uses: ./.github/workflows/01-build-playground.yml
-  #   needs: [init-playground]
+  build-playground:
+    uses: ./.github/workflows/01-build-playground.yml
+    needs: [init-playground]
 
-  # cypress:
-  #   uses: ./.github/workflows/01-cypress.yml
-  #   needs: [build]
-
-  default:
-    uses: ./.github/workflows/default.yml
+  cypress:
+    uses: ./.github/workflows/01-cypress.yml
+    needs: [build]
 
   publishnext:
-    needs: [default]
     name: Publish experimental Packages
-    # needs: [test, cypress]
+    needs: [test, cypress]
     # Only publish if not on the main branch, the release tag starts with a "v"
     # and is flagged as a prerelease
     if: |
@@ -63,8 +59,8 @@ jobs:
           echo "Semver experimental version $SEMVER_VERSION-$GITHUB_SHA_SHORT"
 
   publishlatest:
-    needs: [default]
     name: Publish stable packages
+    needs: [test, cypress]
     if: github.event.release.target_commitish == 'test-package-publishing' && github.event.release.prerelease == false
     runs-on: ubuntu-latest
     steps:
