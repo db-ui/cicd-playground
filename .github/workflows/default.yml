@@ -4,12 +4,15 @@ on: [push]
 
 jobs:
   test-context:
-    - name: Get branch name
-      uses: actions/github-script@v6
-      with:
-        script: |
-          console.log(context?.payload?.repository.name)
-          console.log(context?.payload?.repository.owner)
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get branch name
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(context?.payload?.repository.name)
+            console.log(context?.payload?.repository.owner)
 
   init:
     uses: ./.github/workflows/00-init.yml
