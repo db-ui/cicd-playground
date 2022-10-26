@@ -14,7 +14,7 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
         
       - name: Repo workspace
-        if: toJson(github.event.pull_request.head.repo.owner.login) == 'dbsystel'
+        if: ${{ toJson(github.event.pull_request.head.repo.owner.login) == 'dbsystel' }}
         uses: actions/github-script@v6
         with:
           script: |
