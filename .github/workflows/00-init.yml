@@ -15,7 +15,7 @@ jobs:
         
       - name: Repo workspace
         env:
-          HEAD_OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+          HEAD_OWNER: ${{ github.head.repo.owner.login }}
         uses: actions/github-script@v6
         with:
           script: |
