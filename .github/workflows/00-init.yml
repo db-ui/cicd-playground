@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Repo workspace
         env:
-          OWNER_LOGIN: ${{github.event}}
+          OWNER_LOGIN: ${{github.event.pull_request.head.owner.login}}
         uses: actions/github-script@v6
         with:
           script: |
