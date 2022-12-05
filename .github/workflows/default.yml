@@ -26,6 +26,7 @@ jobs:
     needs: [build]
 
   deploy:
+    if: ${{ github.actor != 'dependabot[bot]' && github.event.pull_request == null || github.event.pull_request.head.repo.owner.login == 'dbsystel' }}
     uses: ./.github/workflows/02-deploy-gh-pages.yml
     needs: [test, cypress, build-playground]
 
