@@ -26,6 +26,6 @@
   ],
   "devDependencies": {
     "cypress": "^10.2.0",
-    "got": "^12.1.0"
+    "got": "^12.5.3"
   }
 }
