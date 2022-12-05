@@ -21,17 +21,6 @@ jobs:
         with:
           name: build
           path: out
-          
-      - name: GitHub Actor
-        run: echo "The github actor is $GITHUB_ACTOR"
-
-      - name: Logging information
-        uses: actions/github-script@v6
-        with:
-          script: |
-            console.log('github.actor', github.actor);
-            console.log('github.event.pull_request_target', github.event?.pull_request_target);
-            console.log('github.event.pull_request.head.repo.owner.login', github.event?.pull_request.head.repo.owner.login);
 
       - name: ➕ Bundle current gh-pages
         uses: ./.github/actions/bundle-gh-page
