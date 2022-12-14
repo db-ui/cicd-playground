@@ -3,7 +3,7 @@
  */
 import FS from 'fs';
 
-const uploadReleaseAsset = async ({
+const uploadAsset = async ({
 	github,
 	context,
 	release_id,
@@ -20,4 +20,4 @@ const uploadReleaseAsset = async ({
 	});
 };
 
-export default uploadReleaseAsset;
+export default uploadAsset;
