@@ -1,7 +1,7 @@
 /*
  * Uploads a file to a release
  */
-const FS = require('fs');
+import FS from "fs";
 
 module.exports = async ({
 	github,
