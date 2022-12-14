@@ -27,7 +27,7 @@ jobs:
           result-encoding: json
           script: |
             const script = require('./.github/scripts/upload-asset.js');
-            const release_id = context.release.id;
+            const release_id = context.payload.release.id;
             const assetName = test.zip;
             const assetPath = ./test.zip;
             return await script({github, context, release_id, assetName, assetPath});
