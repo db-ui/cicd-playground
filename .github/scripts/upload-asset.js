@@ -1,9 +1,9 @@
 /*
  * Uploads a file to a release
  */
-import FS from "fs";
+import FS from 'fs';
 
-module.exports = async ({
+const uploadReleaseAsset = async ({
 	github,
 	context,
 	release_id,
@@ -19,3 +19,5 @@ module.exports = async ({
 		data: FS.readFileSync(assetPath),
 	});
 };
+
+export default uploadReleaseAsset;
