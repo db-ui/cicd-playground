@@ -26,7 +26,7 @@ jobs:
         with:
           result-encoding: json
           script: |
-            import uploadAsset from '${{ github.workspace }}/.github/scripts/upload-asset.js';
+            const { default: uploadAsset } = await import('${{ github.workspace }}/.github/scripts/upload-asset.js');
             const release_id = context.payload.release.id;
             const assetName = 'test.zip';
             const assetPath = '${{ github.workspace }}/test.zip';
