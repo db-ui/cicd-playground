@@ -25,7 +25,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "cypress": "^10.2.0",
+    "cypress": "^12.2.0",
     "got": "^12.5.3"
   }
 }
