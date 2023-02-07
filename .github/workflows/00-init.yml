@@ -8,6 +8,18 @@ jobs:
     name: Init
     runs-on: ubuntu-latest
     steps:
+      - name: Print the GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+        
+      - name: Repo workspace
+        if: ${{ github.event.pull_request.head.repo.owner.login == 'dbsystel' }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log("Hello, darkness my old friend!");
+            
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.11.0
 
