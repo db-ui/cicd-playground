@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: ⌚ Update PRs
-        id: cleanup
+        id: update-prs
         uses: actions/github-script@v6
         with:
           script: |
