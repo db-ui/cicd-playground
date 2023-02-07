@@ -4,7 +4,7 @@
   "description": "Create gh-pages for the Playground",
   "type": "module",
   "scripts": {
-    "clean": "npx rimraf -y ../../out",
+    "clean": "npx -y rimraf ../../out",
     "dev": "vite",
     "build": "npm run clean && vite build",
     "preview": "vite preview"
