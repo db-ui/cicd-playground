@@ -1,5 +1,4 @@
----
-name: Update Release candidate Branch
+name: Sync release-candidate Branch with Main
 
 on:
   push:
@@ -7,24 +6,23 @@ on:
       - main
 
 jobs:
-  update-release-candidate-branch:
+  sync-release-candidate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout Main Branch
         uses: actions/checkout@v4
         with:
           ref: main
 
-      - name: Pull latest changes
-        run: git pull origin main
-
-      - name: Checkout release-candidate branch
-        run: git checkout release-candidate
-
-      - name: Merge main into release-candidate
-        run: git merge main
-
-      - name: Push changes
+      - name: Checkout release-candidate Branch
         run: |
+          git fetch origin release-candidate
+          git checkout release-candidate
+
+      - name: Merge Main into release-candidate
+        run: |
+          git merge main
           git push origin release-candidate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
