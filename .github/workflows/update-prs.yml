@@ -1,24 +1,24 @@
----
-name: Update all PR branches if main gets update
+# ---
+# name: Update all PR branches if main gets update
 
-on:
-  push:
-    branches:
-      - "main"
+# on:
+#   push:
+#     branches:
+#       - "main"
 
-jobs:
-  update-prs:
-    name: Update PRs
-    runs-on: ubuntu-latest
-    steps:
-      - name: ⬇ Checkout repo
-        uses: actions/checkout@v3
+# jobs:
+#   update-prs:
+#     name: Update PRs
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: ⬇ Checkout repo
+#         uses: actions/checkout@v3
 
-      - name: ⌚ Update PRs
-        id: update-prs
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { default: updatePrs } = await import('${{ github.workspace }}/.github/scripts/update-prs.js');
-            // print how many PRs are updated
-            console.log(await updatePrs({github, context}));
+#       - name: ⌚ Update PRs
+#         id: update-prs
+#         uses: actions/github-script@v6
+#         with:
+#           script: |
+#             const { default: updatePrs } = await import('${{ github.workspace }}/.github/scripts/update-prs.js');
+#             // print how many PRs are updated
+#             console.log(await updatePrs({github, context}));
