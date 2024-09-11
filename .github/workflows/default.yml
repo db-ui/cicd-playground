@@ -2,6 +2,10 @@ name: Test and deploy to GitHub Pages
 
 on: [push]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 jobs:
   init:
     uses: ./.github/workflows/00-init.yml
