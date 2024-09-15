@@ -9,7 +9,7 @@
   "scripts": {
     "tsc": "tsc -p . ",
     "build": "npm run tsc",
-    "publish:dryrun": "npm publish --dry-run"
+    "publish:dryrun": "npm publish --dry-run --provenance --access public"
   },
   "repository": {
     "type": "git",
