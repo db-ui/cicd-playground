@@ -10,11 +10,11 @@ const updatePrs = async ({ github, context }) => {
 		per_page: 100
 	});
 
-	const nonDraftPulls = pulls?.data?.filter((pr) => !pr.draft && pr.user.login !== "dependabot[bot]");
+	const nonDraftAndDependabotPulls = pulls?.data?.filter((pr) => !pr.draft && pr.user.login !== "dependabot[bot]");
 	let updatedBranches = 0;
 
-	if (nonDraftPulls?.length > 0) {
-		for (const pr of nonDraftPulls) {
+	if (nonDraftAndDependabotPulls?.length > 0) {
+		for (const pr of nonDraftAndDependabotPulls) {
 			try {
 				await github.rest.pulls.updateBranch({
 					owner,
@@ -28,7 +28,7 @@ const updatePrs = async ({ github, context }) => {
 		}
 	}
 
-	return `Updated branches: ${updatedBranches}/${nonDraftPulls.length}`;
+	return `Updated branches: ${updatedBranches}/${nonDraftAndDependabotPulls.length}`;
 };
 
 export default updatePrs;
