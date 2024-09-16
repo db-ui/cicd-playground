@@ -10,7 +10,7 @@ const updatePrs = async ({ github, context }) => {
 		per_page: 100
 	});
 
-	const nonDraftPulls = pulls?.data?.filter((pr) => !pr.draft);
+	const nonDraftPulls = pulls?.data?.filter((pr) => !pr.draft && pr.user.login !== "dependabot[bot]");
 	let updatedBranches = 0;
 
 	if (nonDraftPulls?.length > 0) {
