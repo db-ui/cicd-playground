@@ -1,5 +1,4 @@
----
-name: Update Release candidate Branch
+name: Update release-candidate Branch
 
 on:
   push:
@@ -9,22 +8,16 @@ on:
 jobs:
   update-release-candidate-branch:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout main branch
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          fetch-depth: 0
 
-      - name: Pull latest changes
-        run: git pull origin main
-
-      - name: Checkout release-candidate branch
-        run: git checkout release-candidate
-
-      - name: Merge main into release-candidate
-        run: git merge main
-
-      - name: Push changes
+      - name: Update release-candidate branch
         run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout release-candidate
+          git merge origin/main
           git push origin release-candidate
