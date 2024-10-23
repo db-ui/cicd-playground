@@ -7,11 +7,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dbsystel/cicd-playground.git"
+    "url": "git+https://github.com/db-ui/cicd-playground.git"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/dbsystel/cicd-playground/issues"
+    "url": "https://github.com/db-ui/cicd-playground/issues"
   },
-  "homepage": "https://github.com/dbsystel/cicd-playground#readme"
+  "homepage": "https://github.com/db-ui/cicd-playground#readme"
 }
