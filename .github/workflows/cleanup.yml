@@ -18,7 +18,7 @@ jobs:
         uses: ./.github/actions/npm-cache
 
       - name: 📥 Get gh-pages tar
-        run: wget -q https://github.com/dbsystel/cicd-playground/tarball/gh-pages
+        run: wget -q https://github.com/db-ui/cicd-playground/tarball/gh-pages
       - name: ➕ Create public dir
         run: mkdir public
       - name: 📦 Unpack Tar

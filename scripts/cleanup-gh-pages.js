@@ -10,7 +10,7 @@ const TAG = 'cleanup-gh-pages:';
 const run = async () => {
 	if (fs.existsSync('public/review')) {
 		const data = await got(
-			'https://api.github.com/repos/dbsystel/cicd-playground/branches'
+			'https://api.github.com/repos/db-ui/cicd-playground/branches'
 		).json();
 		if (data?.length > 0) {
 			const dirsToDelete = fs
