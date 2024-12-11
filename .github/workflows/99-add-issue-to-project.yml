@@ -1,30 +1,35 @@
-name: Add Issue to GitHub Project (v2)
+name: Add Issue to Project
 
 on:
   issues:
-    types: [opened]  # Trigger when a new issue is opened
+    types: [opened]
 
 jobs:
-  add_to_project:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+  add-issue-to-project:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2  # Checkout the repository to work with
-
-      - name: Add issue to GitHub Project (v2)
+        uses: actions/checkout@v2
+      - name: Add issue to project
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to authenticate
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }} # Set this in your repository secrets
         run: |
-          # Define the Project ID where the issue should be added
-          PROJECT_ID="8"  # Replace with your actual GitHub Project ID
-          ISSUE_NUMBER="${{ github.event.issue.number }}"  # Get the number of the opened issue
+          issue_number=${{ github.event.issue.number }}
+          issue_node_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -f query='
+            query ($owner: String!, $name: String!, $issueNumber: Int!) {
+              repository(owner: $owner, name: $name) {
+                issue(number: $issueNumber) {
+                  id
+                }
+              }
+            }' -q .data.repository.issue.id)
 
-          # GitHub API call to add the issue to the project without specifying a column
-          curl -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            -d '{
-                  "content_id": '"$ISSUE_NUMBER"',
-                  "content_type": "Issue"
-                }' \
-            "https://api.github.com/projects/${PROJECT_ID}/items"
+          gh api graphql -F projectId=$PROJECT_ID -F contentId=$issue_node_id -f query='
+            mutation ($projectId: ID!, $contentId: ID!) {
+              addProjectNextItem(input: {projectId: $projectId, contentId: $contentId}) {
+                projectNextItem {
+                  id
+                }
+              }
+            }'
