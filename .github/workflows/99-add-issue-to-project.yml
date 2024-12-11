@@ -1,27 +1,30 @@
-name: Add Issue to Project
+name: Add Issue to GitHub Project (v2)
 
 on:
   issues:
-    types: [opened]
+    types: [opened]  # Trigger when a new issue is opened
 
 jobs:
   add_to_project:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2  # Checkout the repository to work with
 
-      - name: Add issue to GitHub Project
+      - name: Add issue to GitHub Project (v2)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to authenticate
         run: |
-          # Define GitHub Project ID and retrieve issue number
-          PROJECT_ID="8"
-          ISSUE_NUMBER="${{ github.event.issue.number }}"
+          # Define the Project ID where the issue should be added
+          PROJECT_ID="8"  # Replace with your actual GitHub Project ID
+          ISSUE_NUMBER="${{ github.event.issue.number }}"  # Get the number of the opened issue
 
-          # GitHub API-call to add the issue to your project
+          # GitHub API call to add the issue to the project without specifying a column
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.inertia-preview+json" \
-            -d "{\"content_type\": \"Issue\", \"content_id\": $ISSUE_NUMBER}" \
-            "https://api.github.com/projects/columns/cards?project_id=$PROJECT_ID"
+            -H "Accept: application/vnd.github+json" \
+            -d '{
+                  "content_id": '"$ISSUE_NUMBER"',
+                  "content_type": "Issue"
+                }' \
+            "https://api.github.com/projects/${PROJECT_ID}/items"
