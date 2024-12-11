@@ -27,6 +27,28 @@ jobs:
             }' -q .data.repository.issue.id)
           echo "ISSUE_ID=$issue_id" >> $GITHUB_ENV
 
+      - name: Verify access to project
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+        run: |
+          result=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+                         -H "Accept: application/vnd.github.v3+json" \
+                         "https://api.github.com/projects/$DEV_PROJECT_ID")
+
+          echo "Project response: $result"
+
+          if echo "$result" | jq -e . >/dev/null 2>&1; then
+            project_state=$(echo $result | jq -r '.state')
+            if [ "$project_state" != "active" ]; then
+              echo "Project is not active or not found"
+              exit 1
+            fi
+          else
+            echo "Failed to parse project response as JSON."
+            exit 1
+          fi
+
       - name: Get columns in project
         id: get_columns
         env:
