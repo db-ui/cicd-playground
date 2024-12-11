@@ -1,0 +1,27 @@
+name: Add Issue to Project
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add_to_project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Add issue to GitHub Project
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Define GitHub Project ID and retrieve issue number
+          PROJECT_ID="8"
+          ISSUE_NUMBER="${{ github.event.issue.number }}"
+
+          # GitHub API-call to add the issue to your project
+          curl -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.inertia-preview+json" \
+            -d "{\"content_type\": \"Issue\", \"content_id\": $ISSUE_NUMBER}" \
+            "https://api.github.com/projects/columns/cards?project_id=$PROJECT_ID"
