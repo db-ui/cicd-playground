@@ -27,21 +27,22 @@ jobs:
             }' -q .data.repository.issue.id)
           echo "ISSUE_ID=$issue_id" >> $GITHUB_ENV
 
-      - name: Verify access to project
+      - name: Verify DEV_PROJECT_ID
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+          ORG: ${{ github.repository_owner }}
         run: |
           result=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
                          -H "Accept: application/vnd.github.v3+json" \
-                         "https://api.github.com/projects/$DEV_PROJECT_ID")
+                         "https://api.github.com/orgs/$ORG/projects/$DEV_PROJECT_ID")
 
           echo "Project response: $result"
 
           if echo "$result" | jq -e . >/dev/null 2>&1; then
             project_state=$(echo $result | jq -r '.state')
-            if [ "$project_state" != "active" ]; then
-              echo "Project is not active or not found"
+            if [ "$project_state" != "open" ]; then
+              echo "Project is not open or not found"
               exit 1
             fi
           else
@@ -54,6 +55,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+          ORG: ${{ github.repository_owner }}
         run: |
           columns=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
                           -H "Accept: application/vnd.github.inertia-preview+json" \
