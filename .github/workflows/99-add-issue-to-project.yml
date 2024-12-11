@@ -10,12 +10,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Add issue to project
+
+      - name: Get issue ID
+        id: get_issue_id
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }} # Set this in your repository secrets
         run: |
-          issue_node_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -F issueNumber=${{ github.event.issue.number }} -f query='
+          issue_number=${{ github.event.issue.number }}
+          issue_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -F issueNumber=$issue_number -f query='
             query ($owner: String!, $name: String!, $issueNumber: Int!) {
               repository(owner: $owner, name: $name) {
                 issue(number: $issueNumber) {
@@ -23,12 +25,28 @@ jobs:
                 }
               }
             }' -q .data.repository.issue.id)
+          echo "ISSUE_ID=$issue_id" >> $GITHUB_ENV
 
-          gh api graphql -F projectId=$DEV_PROJECT_ID -F contentId=$issue_node_id -f query='
-            mutation ($projectId: ID!, $contentId: ID!) {
-              addProjectNextItem(input: {projectId: $projectId, contentId: $contentId}) {
-                projectNextItem {
-                  id
-                }
-              }
-            }'
+      - name: Get columns in project
+        id: get_columns
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+        run: |
+          columns=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
+                          -H "Accept: application/vnd.github.v3+json" \
+                          "https://api.github.com/projects/$DEV_PROJECT_ID/columns")
+          column_id=$(echo $columns | jq -r '.[] | select(.name == "No Status") | .id')
+          echo "COLUMN_ID=$column_id" >> $GITHUB_ENV
+
+      - name: Add issue to project
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PROJECT_CARD_URL="https://api.github.com/projects/columns/$COLUMN_ID/cards"
+          
+          # Create a project card for the issue in the specified column
+          curl -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+               -H "Accept: application/vnd.github.v3+json" \
+               $PROJECT_CARD_URL \
+               -d '{"content_id": "'"${ISSUE_ID}"'", "content_type": "Issue"}'
