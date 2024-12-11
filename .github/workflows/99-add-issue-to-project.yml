@@ -13,10 +13,9 @@ jobs:
       - name: Add issue to project
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }} # Set this in your repository secrets
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }} # Set this in your repository secrets
         run: |
-          issue_number=${{ github.event.issue.number }}
-          issue_node_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -F issueNumber="$issue_number" -f query='
+          issue_node_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -F issueNumber=${{ github.event.issue.number }} -f query='
             query ($owner: String!, $name: String!, $issueNumber: Int!) {
               repository(owner: $owner, name: $name) {
                 issue(number: $issueNumber) {
@@ -25,7 +24,7 @@ jobs:
               }
             }' -q .data.repository.issue.id)
 
-          gh api graphql -F projectId=$PROJECT_ID -F contentId=$issue_node_id -f query='
+          gh api graphql -F projectId=$DEV_PROJECT_ID -F contentId=$issue_node_id -f query='
             mutation ($projectId: ID!, $contentId: ID!) {
               addProjectNextItem(input: {projectId: $projectId, contentId: $contentId}) {
                 projectNextItem {
