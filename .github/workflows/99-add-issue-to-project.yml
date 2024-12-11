@@ -10,17 +10,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Set up GitHub CLI
-        run: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0 && sudo apt-add-repository https://cli.github.com/packages && sudo apt-get update && sudo apt-get install gh -y
-      - name: Authenticate GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
       - name: Add issue to project
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }} # Set this in your repository secrets
         run: |
           issue_number=${{ github.event.issue.number }}
-          issue_node_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -F issueNumber=${issue_number} -f query='
+          issue_node_id=$(gh api graphql -F owner='${{ github.repository_owner }}' -F name='${{ github.event.repository.name }}' -F issueNumber="$issue_number" -f query='
             query ($owner: String!, $name: String!, $issueNumber: Int!) {
               repository(owner: $owner, name: $name) {
                 issue(number: $issueNumber) {
