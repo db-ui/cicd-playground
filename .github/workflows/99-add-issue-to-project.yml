@@ -33,14 +33,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
         run: |
+          project_number=$(echo $DEV_PROJECT_ID | jq -r '.split("/")[-1]')  # Optional if $DEV_PROJECT_ID is full URL, otherwise remove this line.
           columns=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-                          -H "Accept: application/vnd.github.v3+json" \
-                          "https://api.github.com/projects/$DEV_PROJECT_ID/columns")
-          
-          echo "Columns Response: $columns"
+                          -H "Accept: application/vnd.github.inertia-preview+json" \
+                          "https://api.github.com/projects/$project_number/columns")
 
-          column_id=$(echo $columns | jq -r 'map(select(.name == "No Status")) | .[0].id')
-          echo "COLUMN_ID=$column_id" >> $GITHUB_ENV
+          echo "Columns response: $columns"
+
+          if echo "$columns" | jq -e . >/dev/null 2>&1; then
+            column_id=$(echo $columns | jq -r '.[] | select(.name=="No Status") | .id')
+            if [ -n "$column_id" ]; then
+              echo "COLUMN_ID=$column_id" >> $GITHUB_ENV
+            else
+              echo "No column found with the name 'No Status'."
+              exit 1
+            fi
+          else
+            echo "Failed to parse columns response as JSON."
+            exit 1
+          fi
 
       - name: Add issue to project
         env:
