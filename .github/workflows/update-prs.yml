@@ -22,4 +22,4 @@ jobs:
             # deactivated this for the moment, as it probably doesn't make any sense on GitHub.com with our limited runners
             # const { default: updatePrs } = await import('${{ github.workspace }}/.github/scripts/update-prs.js');
             // print how many PRs are updated
-            console.log(await updatePrs({github, context}));
+            # console.log(await updatePrs({github, context}));
