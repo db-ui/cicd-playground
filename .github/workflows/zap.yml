@@ -9,7 +9,7 @@ on:
 jobs:
   zap:
     name: Zap
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Use Ubuntu 24.04 explicitly
     steps:
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.7.0

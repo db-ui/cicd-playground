@@ -5,7 +5,7 @@ on:
 
 jobs:
   cypress:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Use Ubuntu 24.04 explicitly
     timeout-minutes: 10
     steps:
       - name: ⬇️ Checkout repo
