@@ -16,7 +16,7 @@ jobs:
 
       - name: ⌚ Update PRs
         id: update-prs
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             # deactivated this for the moment, as it probably doesn't make any sense on GitHub.com with our limited runners
