@@ -2,4 +2,4 @@
 
 Playground for testing GitHub CI/CD
 
-gets deployed to https://db-ui.github.io/cicd-playground/ out of the folder `/public/`
+gets deployed to https://db-ux-design-system.github.io/cicd-playground/ out of the folder `/public/`
