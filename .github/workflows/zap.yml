@@ -14,4 +14,4 @@ jobs:
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.7.0
         with:
-          target: 'https://api.github.com/repos/db-ui/cicd-playground/branches'
+          target: 'https://api.github.com/repos/db-ux-design-system/cicd-playground/branches'
