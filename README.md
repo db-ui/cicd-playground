@@ -2,6 +2,6 @@
 
 Playground for testing GitHub CI/CD
 
-hier habe ich nun noch einen text eingefügt.
+dies ist nun der finale weitere Text.
 
 gets deployed to https://db-ui.github.io/cicd-playground/ out of the folder `/public/`
