@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-24.04 # Use Ubuntu 24.04 explicitly
     steps:
       - name: ZAP Scan
-        uses: zaproxy/action-baseline@v0.7.0
+        uses: zaproxy/action-baseline@v0.14.0
         with:
           target: 'https://api.github.com/repos/db-ui/cicd-playground/branches'
