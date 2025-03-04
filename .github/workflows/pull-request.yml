@@ -1,0 +1,28 @@
+---
+name: On-PR to main
+
+on:
+  pull_request:
+    branches: ["main"]
+  merge_group:
+    branches: ["main"]
+
+permissions:
+  pull-requests: write
+  contents: write
+  actions: read
+  security-events: write
+
+jobs:
+  dependabot:
+    uses: ./.github/workflows/99-auto-merge.yml
+
+  codeql:
+    uses: ./.github/workflows/99-codeql-analysis.yml
+
+  dependency-review:
+    uses: ./.github/workflows/99-dependency-review.yml
+
+  labeler:
+    if: github.event.pull_request.head.repo.owner.login == 'db-ux-design-system'
+    uses: ./.github/workflows/99-labeler.yml
