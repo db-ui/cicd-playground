@@ -14,7 +14,7 @@ jobs:
         id: get_project_item
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}  # Use your predefined Project ID
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           OWNER=${{ github.repository_owner }}
@@ -61,6 +61,7 @@ jobs:
                         name
                       }
                     }
+                    __typename
                     ... on ProjectV2ItemFieldSingleSelectValue {
                       name
                     }
@@ -68,7 +69,7 @@ jobs:
                 }
               }
             }
-          }' --jq '.data.node.fieldValues.nodes[] | select(.field.name=="Status") | .name')
+          }' --jq '.data.node.fieldValues.nodes[] | select(.field.name=="Status" and .__typename=="ProjectV2ItemFieldSingleSelectValue") | .name')
 
           echo "Project Status: $STATUS"
           echo "STATUS=$STATUS" >> $GITHUB_ENV
