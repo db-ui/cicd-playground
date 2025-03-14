@@ -41,16 +41,16 @@ jobs:
           echo "Project Item ID: $ITEM_ID"
           echo "ITEM_ID=$ITEM_ID" >> $GITHUB_ENV
 
-      - name: Get PR Project Status
-        id: get_status
+      - name: Debug – Get PR Project Status (Raw Data)
+        id: debug_status
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PROJECT_ITEM_ID=${{ env.ITEM_ID }}
       
-          echo "Fetching project status..."
+          echo "Fetching raw project status data..."
       
-          STATUS=$(gh api graphql -f query='
+          RAW_RESPONSE=$(gh api graphql -f query='
           query {
             node(id: "'"$PROJECT_ITEM_ID"'") {
               ... on ProjectV2Item {
@@ -59,25 +59,14 @@ jobs:
                     __typename
                     field {
                       __typename
-                      ... on ProjectV2SingleSelectField {
-                        name
-                      }
-                    }
-                    ... on ProjectV2ItemFieldSingleSelectValue {
-                      name
                     }
                   }
                 }
               }
             }
-          }' --jq '
-          .data.node.fieldValues.nodes[] 
-          | select(.field.__typename == "ProjectV2SingleSelectField" and .field.name == "Status") 
-          | select(.__typename == "ProjectV2ItemFieldSingleSelectValue") 
-          | .name')
+          }')
       
-          echo "Project Status: $STATUS"
-          echo "STATUS=$STATUS" >> $GITHUB_ENV
+          echo "Raw Response: $RAW_RESPONSE"
           
       - name: Apply or Remove "Do Not Merge" Label
         env:
