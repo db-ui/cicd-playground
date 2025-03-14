@@ -41,7 +41,7 @@ jobs:
           echo "Project Item ID: $ITEM_ID"
           echo "ITEM_ID=$ITEM_ID" >> $GITHUB_ENV
 
-      - name: Debug: Get PR Project Status
+      - name: Debug – Get PR Project Status
         id: get_status_debug
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
