@@ -19,9 +19,9 @@ jobs:
           PR_NUMBER=${{ github.event.pull_request.number }}
           OWNER=${{ github.repository_owner }}
           REPO=${{ github.event.repository.name }}
-
+      
           echo "Fetching Project Item ID..."
-          
+      
           ITEM_ID=$(gh api graphql -f query='
           query {
             repository(owner: "'"$OWNER"'", name: "'"$REPO"'") {
@@ -37,8 +37,14 @@ jobs:
               }
             }
           }' --jq '.data.repository.pullRequest.projectItems.nodes[] | select(.project.id=="'"$DEV_PROJECT_ID"'") | .id')
-
-          echo "Project Item ID: $ITEM_ID"
+      
+          echo "Fetched ITEM_ID: $ITEM_ID"
+      
+          if [[ -z "$ITEM_ID" ]]; then
+            echo "❌ ERROR: No Project Item ID found! Please check the project association."
+            exit 1
+          fi
+      
           echo "ITEM_ID=$ITEM_ID" >> $GITHUB_ENV
 
       - name: Debug – Get PR Project Status – Only __typename
