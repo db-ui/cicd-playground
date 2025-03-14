@@ -10,6 +10,35 @@ jobs:
   check_project_status:
     runs-on: ubuntu-latest
     steps:
+    - name: Debug – Fetch PR Project Items
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+      run: |
+        PR_NUMBER=${{ github.event.pull_request.number }}
+        OWNER=${{ github.repository_owner }}
+        REPO=${{ github.event.repository.name }}
+    
+        echo "Fetching raw project item data for PR #$PR_NUMBER..."
+    
+        RAW_RESPONSE=$(gh api graphql -f query='
+        query {
+          repository(owner: "'"$OWNER"'", name: "'"$REPO"'") {
+            pullRequest(number: '$PR_NUMBER') {
+              projectItems(first: 5) {
+                nodes {
+                  id
+                  project {
+                    id
+                  }
+                }
+              }
+            }
+          }
+        }')
+    
+        echo "Raw GraphQL Response: $RAW_RESPONSE"
+
       - name: Get PR Project Item ID
         id: get_project_item
         env:
