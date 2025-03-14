@@ -47,7 +47,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PROJECT_ITEM_ID=${{ env.ITEM_ID }}
-      
+
           echo "Fetching raw project status data..."
           
           RAW_RESPONSE=$(gh api graphql -f query='
@@ -76,11 +76,11 @@ jobs:
               }
             }
           }')
-      
+          
           echo "Full API Response: $RAW_RESPONSE"
       
           echo "$RAW_RESPONSE" > project_debug.json
-
+          
       - name: Apply or Remove "Do Not Merge" Label
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
