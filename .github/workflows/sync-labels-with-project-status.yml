@@ -77,7 +77,7 @@ jobs:
           REPO=${{ github.repository }}
           LABEL="Do Not Merge"
 
-          if [[ "$STATUS" == "Blocked" || "$STATUS" == "In Progress" ]]; then
+          if [[ "$STATUS" == "ready for release" ]]; then
             echo "Adding '$LABEL' label..."
             gh issue edit $PR_NUMBER --repo "$REPO" --add-label "$LABEL"
           else
@@ -85,15 +85,15 @@ jobs:
             gh issue edit $PR_NUMBER --repo "$REPO" --remove-label "$LABEL"
           fi
 
-      - name: Comment on PR if Blocked
-        if: env.STATUS == 'Blocked'
+      - name: Comment on PR if "Ready for Release"
+        if: env.STATUS == 'ready for release'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PR_NUMBER=${{ github.event.pull_request.number }}
           REPO=${{ github.repository }}
 
-          COMMENT="⚠️ This PR is currently in a 'Blocked' state in GitHub Projects and cannot be merged."
+          COMMENT="⚠️ This PR is currently in a 'ready for release' state in GitHub Projects and cannot be merged. Please remove the 'Do Not Merge' label to proceed."
           
           gh pr comment $PR_NUMBER --repo "$REPO" --body "$COMMENT"
 
