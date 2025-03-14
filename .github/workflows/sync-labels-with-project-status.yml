@@ -69,7 +69,7 @@ jobs:
                 }
               }
             }
-          }' --jq '.data.node.fieldValues.nodes[] | select(.field.name=="Status" and .__typename=="ProjectV2ItemFieldSingleSelectValue") | .name')
+          }' --jq '.data.node.fieldValues.nodes[] | select(.field.name=="Status") | select(.__typename=="ProjectV2ItemFieldSingleSelectValue") | .name')
 
           echo "Project Status: $STATUS"
           echo "STATUS=$STATUS" >> $GITHUB_ENV
