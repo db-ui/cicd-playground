@@ -4,6 +4,7 @@ name: On-PR to main
 on:
   pull_request:
     branches: ["main"]
+    types: [opened, synchronize, reopened]
   merge_group:
     branches: ["main"]
 
@@ -16,6 +17,9 @@ permissions:
 jobs:
   dependabot:
     uses: ./.github/workflows/99-auto-merge.yml
+
+  dependabot-prettier-self-healing:
+    uses: ./.github/workflows/99-auto-format-dependabot-prettier-updates.yml
 
   codeql:
     uses: ./.github/workflows/99-codeql-analysis.yml
