@@ -35,7 +35,7 @@ jobs:
       - name: Run Prettier to format the code
         if: env.prettier_update == 'true'
         run: |
-          npx prettier --write .  # Adjust to target your specific files or folder
+          npx prettier --write .
 
       - name: Commit changes if formatting is done
         if: env.prettier_update == 'true'
