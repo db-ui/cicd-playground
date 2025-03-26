@@ -1,8 +1,7 @@
 name: Auto-Format with Prettier on PR for "self-healing" PRs
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_call:
 
 jobs:
   format:
