@@ -1,24 +1,23 @@
-name: Auto-Format with Prettier on PR
+name: Auto-Format with Prettier on PR for "self-healing" PRs
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_call:
 
 jobs:
   format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # This already checks out the PR branch by default
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'  # Adjust based on your project’s Node.js version
+          node-version-file: '.nvmrc'
 
       - name: Install dependencies
         run: |
-          npm install
+          npm ci
 
       - name: Check if Prettier update PR
         id: check_pr
@@ -35,7 +34,7 @@ jobs:
       - name: Run Prettier to format the code
         if: env.prettier_update == 'true'
         run: |
-          npx prettier --write .  # Adjust to target your specific files or folder
+          npx --no prettier --write .
 
       - name: Commit changes if formatting is done
         if: env.prettier_update == 'true'
