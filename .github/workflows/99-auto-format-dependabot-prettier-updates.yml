@@ -1,23 +1,24 @@
-name: Auto-Format with Prettier on PR for "self-healing" PRs
+name: Auto-Format with Prettier on PR
 
 on:
-  workflow_call:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3  # This already checks out the PR branch by default
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version: '16'  # Adjust based on your project’s Node.js version
 
       - name: Install dependencies
         run: |
-          npm ci
+          npm install
 
       - name: Check if Prettier update PR
         id: check_pr
@@ -34,13 +35,17 @@ jobs:
       - name: Run Prettier to format the code
         if: env.prettier_update == 'true'
         run: |
-          npx --no prettier --write .
+          npx prettier --write .  # Adjust to target your specific files or folder
 
       - name: Commit changes if formatting is done
         if: env.prettier_update == 'true'
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Checkout the PR branch (already done by actions/checkout)
+          git checkout ${{ github.head_ref }}  # This ensures we're on the PR branch
+
           git add .
           git commit -m "Auto-format codebase with Prettier" || echo "No changes to commit"
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin HEAD:${{ github.head_ref }}  # Push back to the same PR branch
