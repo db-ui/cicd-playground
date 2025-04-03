@@ -14,14 +14,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug Information
-        run: |
-          echo "Repository: ${{ github.repository }}"
-          echo "Event: ${{ github.event_name }}"
-          echo "Issue Number: ${{ github.event.issue.number }}"
-          echo "Pull Request Number: ${{ github.event.pull_request.number }}"
-          echo "Milestone: ${{ github.event.milestone.title }}"
-
       - name: Assign issue or PR to project if milestone set
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Pass the GITHUB_TOKEN for authentication
@@ -37,8 +29,8 @@ jobs:
           echo "Issue/PR Number: $ISSUE_NUMBER"
           echo "Milestone: ${{ github.event.milestone.title }}"
 
-          # Directly set the column ID here (replace with the actual column ID)
-          COLUMN_ID="18"
+          # Directly set the project ID here (replace with the actual project ID)
+          PROJECT_ID="18"  # Replace with your actual project ID
 
           # Get the repository details
           REPO_NAME=${{ github.repository }}
@@ -48,12 +40,12 @@ jobs:
           if [ -n "${{ github.event.milestone }}" ]; then
             echo "Assigning issue/PR #$ISSUE_NUMBER to project..."
 
-            # Use curl to create a card in the specified project column
+            # Use curl to create a card in the project (no column ID specified)
             curl -X POST \
               -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
               -d "{\"content_id\": \"$ISSUE_NUMBER\", \"content_type\": \"Issue\"}" \
-              "https://api.github.com/repos/$REPO_NAME/projects/columns/$COLUMN_ID/cards"
+              "https://api.github.com/repos/$REPO_NAME/projects/$PROJECT_ID/columns/cards"
           else
             echo "No milestone set, skipping assignment."
           fi
