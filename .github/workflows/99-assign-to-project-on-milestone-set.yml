@@ -14,9 +14,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug Information
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Issue Number: ${{ github.event.issue.number }}"
+          echo "Pull Request Number: ${{ github.event.pull_request.number }}"
+          echo "Milestone: ${{ github.event.milestone.title }}"
+
       - name: Assign issue or PR to project if milestone set
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Ensure we pass GITHUB_TOKEN for authentication
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Pass the GITHUB_TOKEN for authentication
         run: |
           # Extract the issue or PR number
           if [ "${{ github.event.issue }}" ]; then
@@ -25,11 +33,16 @@ jobs:
             ISSUE_NUMBER=${{ github.event.pull_request.number }}
           fi
 
+          # Output values for debugging
+          echo "Issue/PR Number: $ISSUE_NUMBER"
+          echo "Milestone: ${{ github.event.milestone.title }}"
+
           # Directly set the column ID here (replace with the actual column ID)
-          COLUMN_ID="18"  # Replace with your actual column ID
+          COLUMN_ID="18"
 
           # Get the repository details
           REPO_NAME=${{ github.repository }}
+          echo "Repository Name: $REPO_NAME"
 
           # If a milestone is set, assign it to the project
           if [ -n "${{ github.event.milestone }}" ]; then
