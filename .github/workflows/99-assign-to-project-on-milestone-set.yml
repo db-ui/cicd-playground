@@ -17,6 +17,7 @@ jobs:
       - name: Assign issue or PR to project if milestone set
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Pass the GITHUB_TOKEN for authentication
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}  # Pass the project ID as an environment variable
         run: |
           # Extract the issue or PR number
           if [ "${{ github.event.issue }}" ]; then
@@ -28,9 +29,7 @@ jobs:
           # Output values for debugging
           echo "Issue/PR Number: $ISSUE_NUMBER"
           echo "Milestone: ${{ github.event.milestone.title }}"
-
-          # Directly set the project ID here (replace with the actual project ID)
-          PROJECT_ID="18"  # Replace with your actual project ID
+          echo "Using Project ID: $DEV_PROJECT_ID"
 
           # Get the repository details
           REPO_NAME=${{ github.repository }}
@@ -45,7 +44,7 @@ jobs:
               -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github.v3+json" \
               -d "{\"content_id\": \"$ISSUE_NUMBER\", \"content_type\": \"Issue\"}" \
-              "https://api.github.com/repos/$REPO_NAME/projects/$PROJECT_ID/columns/cards"
+              "https://api.github.com/repos/$REPO_NAME/projects/$DEV_PROJECT_ID/columns/cards"
           else
             echo "No milestone set, skipping assignment."
           fi
