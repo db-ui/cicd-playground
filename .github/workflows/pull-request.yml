@@ -30,3 +30,6 @@ jobs:
   labeler:
     if: github.event.pull_request.head.repo.owner.login == 'db-ux-design-system'
     uses: ./.github/workflows/99-labeler.yml
+
+  project-on-milestone-assignment:
+    uses: ./.github/workflows/99-assign-to-project-on-milestone-set.yml
