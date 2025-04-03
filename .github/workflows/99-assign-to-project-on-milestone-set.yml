@@ -10,6 +10,11 @@ jobs:
   assign_to_project:
     runs-on: ubuntu-latest
 
+    permissions:
+      issues: write  # Permission to modify issues
+      pull-requests: write  # Permission to modify pull requests
+      projects: write  # Permission to manage projects
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
