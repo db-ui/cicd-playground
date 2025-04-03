@@ -16,22 +16,30 @@ jobs:
 
       - name: Assign issue or PR to project if milestone set
         run: |
-          # Get the issue or PR number
-          ISSUE_OR_PR=${{ github.event.issue || github.event.pull_request }}
-          ISSUE_NUMBER=${ISSUE_OR_PR.number}
+          # Extract the issue or PR number
+          if [ "${{ github.event.issue }}" ]; then
+            ISSUE_NUMBER=${{ github.event.issue.number }}
+          elif [ "${{ github.event.pull_request }}" ]; then
+            ISSUE_NUMBER=${{ github.event.pull_request.number }}
+          fi
 
-          # Directly set the project ID
-          PROJECT_ID="18"
+          # Directly set the project ID here
+          PROJECT_ID="18"  # Replace with your actual project ID
+
+          # Get the repository details
+          REPO_NAME=${{ github.repository }}
 
           # If a milestone is set, assign it to the project
           if [ -n "${{ github.event.milestone }}" ]; then
+            echo "Assigning issue/PR #$ISSUE_NUMBER to project..."
+
             gh api \
               --method POST \
               -H "Accept: application/vnd.github.v3+json" \
-              /repos/${{ github.repository }}/projects/columns/cards \
-              -f content_id=${ISSUE_NUMBER} \
+              /repos/$REPO_NAME/projects/columns/cards \
+              -f content_id=$ISSUE_NUMBER \
               -f content_type=issue \
-              -f project_id=${PROJECT_ID}
+              -f project_id=$PROJECT_ID
           else
             echo "No milestone set, skipping assignment."
           fi
