@@ -13,6 +13,7 @@ jobs:
     permissions:
       issues: write  # Permission to modify issues
       pull-requests: write  # Permission to modify pull requests
+      repository-projects: write
 
     steps:
       - name: Checkout code
