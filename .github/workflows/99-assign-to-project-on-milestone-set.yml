@@ -16,7 +16,7 @@ jobs:
 
       - name: Assign issue or PR to project if milestone set
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Explicitly set GH_TOKEN for `gh` CLI
         run: |
           # Extract the issue or PR number
           if [ "${{ github.event.issue }}" ]; then
@@ -25,8 +25,8 @@ jobs:
             ISSUE_NUMBER=${{ github.event.pull_request.number }}
           fi
 
-          # Directly set the project ID here
-          PROJECT_ID="18"  # Replace with your actual project ID
+          # Directly set the column ID here (replace with the actual column ID)
+          COLUMN_ID="18"
 
           # Get the repository details
           REPO_NAME=${{ github.repository }}
@@ -38,10 +38,9 @@ jobs:
             gh api \
               --method POST \
               -H "Accept: application/vnd.github.v3+json" \
-              /repos/$REPO_NAME/projects/columns/cards \
+              /repos/$REPO_NAME/projects/columns/$COLUMN_ID/cards \
               -f content_id=$ISSUE_NUMBER \
-              -f content_type=issue \
-              -f project_id=$PROJECT_ID
+              -f content_type=issue
           else
             echo "No milestone set, skipping assignment."
           fi
