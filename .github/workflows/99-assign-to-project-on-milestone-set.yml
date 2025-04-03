@@ -9,26 +9,29 @@ on:
 jobs:
   assign_to_project:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Assign issue or PR to project if milestone set
         run: |
-          # Set variables
+          # Get the issue or PR number
           ISSUE_OR_PR=${{ github.event.issue || github.event.pull_request }}
-          
-          # Directly set the project ID here
+          ISSUE_NUMBER=${ISSUE_OR_PR.number}
+
+          # Directly set the project ID
           PROJECT_ID="18"
 
-          # Get the repository details
-          REPO_NAME=${{ github.repository }}
-
-          # If project ID exists, assign the issue or PR to the project
-          if [ -n "$PROJECT_ID" ]; then
-            curl -s -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -d "{\"project_url\": \"https://api.github.com/repos/$REPO_NAME/projects/$PROJECT_ID\", \"content_id\": \"$ISSUE_OR_PR\", \"content_type\": \"issue\"}" \
-              "https://api.github.com/repos/$REPO_NAME/projects/$PROJECT_ID/columns/cards"
+          # If a milestone is set, assign it to the project
+          if [ -n "${{ github.event.milestone }}" ]; then
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github.v3+json" \
+              /repos/${{ github.repository }}/projects/columns/cards \
+              -f content_id=${ISSUE_NUMBER} \
+              -f content_type=issue \
+              -f project_id=${PROJECT_ID}
           else
-            echo "Project ID not found!"
+            echo "No milestone set, skipping assignment."
           fi
