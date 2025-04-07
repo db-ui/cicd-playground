@@ -1,0 +1,55 @@
+name: Assign to Project on Milestone Set
+
+on:
+  issues:
+    types: [milestoned]
+  pull_request:
+    types: [milestoned]
+
+jobs:
+  assign_to_project:
+    runs-on: ubuntu-latest
+
+    permissions:
+      issues: write  # Permission to modify issues
+      pull-requests: write  # Permission to modify pull requests
+      repository-projects: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Assign issue or PR to project if milestone set
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Pass the GITHUB_TOKEN for authentication
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}  # Pass the project ID as an environment variable
+        run: |
+          # Extract the issue or PR number
+          if [ "${{ github.event.issue }}" ]; then
+            ISSUE_NUMBER=${{ github.event.issue.number }}
+          elif [ "${{ github.event.pull_request }}" ]; then
+            ISSUE_NUMBER=${{ github.event.pull_request.number }}
+          fi
+
+          # Output values for debugging
+          echo "Issue/PR Number: $ISSUE_NUMBER"
+          echo "Milestone: ${{ github.event.milestone.title }}"
+          echo "Using Project ID: $DEV_PROJECT_ID"
+
+          # Get the repository details
+          REPO_NAME=${{ github.repository }}
+          echo "Repository Name: $REPO_NAME"
+
+          # If a milestone is set, assign it to the project
+          if [ -n "${{ github.event.milestone }}" ]; then
+            echo "Assigning issue/PR #$ISSUE_NUMBER to project..."
+
+            # Use curl to create a card in the project (no column ID specified)
+            curl -X POST \
+              -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              -d "{\"content_id\": \"$ISSUE_NUMBER\", \"content_type\": \"Issue\"}" \
+              "https://api.github.com/repos/$REPO_NAME/projects/$DEV_PROJECT_ID/columns/cards"
+          else
+            echo "No milestone set, skipping assignment."
+          fi
