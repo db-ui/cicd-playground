@@ -1,0 +1,149 @@
+name: Sync PR Labels with GitHub Project Status
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # Runs every 10 minutes
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  check_project_status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug – Fetch PR Project Items
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          OWNER=${{ github.repository_owner }}
+          REPO=${{ github.event.repository.name }}
+      
+          echo "Fetching raw project item data for PR #$PR_NUMBER..."
+      
+          RAW_RESPONSE=$(gh api graphql -f query='
+          query {
+            repository(owner: "'"$OWNER"'", name: "'"$REPO"'") {
+              pullRequest(number: '$PR_NUMBER') {
+                projectItems(first: 5) {
+                  nodes {
+                    id
+                    project {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }')
+      
+          echo "Raw GraphQL Response: $RAW_RESPONSE"
+
+      - name: Get PR Project Item ID
+        id: get_project_item
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEV_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          OWNER=${{ github.repository_owner }}
+          REPO=${{ github.event.repository.name }}
+      
+          echo "Fetching Project Item ID..."
+      
+          ITEM_ID=$(gh api graphql -f query='
+          query {
+            repository(owner: "'"$OWNER"'", name: "'"$REPO"'") {
+              pullRequest(number: '$PR_NUMBER') {
+                projectItems(first: 5) {
+                  nodes {
+                    id
+                    project {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }' --jq '.data.repository.pullRequest.projectItems.nodes[] | select(.project.id=="'"$DEV_PROJECT_ID"'") | .id')
+      
+          echo "Fetched ITEM_ID: $ITEM_ID"
+      
+          if [[ -z "$ITEM_ID" ]]; then
+            echo "❌ ERROR: No Project Item ID found! Please check the project association."
+            exit 1
+          fi
+      
+          echo "ITEM_ID=$ITEM_ID" >> $GITHUB_ENV
+
+      - name: Debug – Get PR Project Status – Only __typename
+        id: debug_status
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PROJECT_ITEM_ID=${{ env.ITEM_ID }}
+      
+          echo "Fetching project status type information..."
+      
+          RAW_RESPONSE=$(gh api graphql -f query='
+          query {
+            node(id: "'"$PROJECT_ITEM_ID"'") {
+              ... on ProjectV2Item {
+                fieldValues(first: 10) {
+                  nodes {
+                    __typename
+                  }
+                }
+              }
+            }
+          }')
+      
+          echo "Raw Type Response: $RAW_RESPONSE"
+          
+      - name: Apply or Remove "Do Not Merge" Label
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+          LABEL="Do Not Merge"
+
+          if [[ "$STATUS" == "ready for release" ]]; then
+            echo "Adding '$LABEL' label..."
+            gh issue edit $PR_NUMBER --repo "$REPO" --add-label "$LABEL"
+          else
+            echo "Removing '$LABEL' label..."
+            gh issue edit $PR_NUMBER --repo "$REPO" --remove-label "$LABEL"
+          fi
+
+      - name: Comment on PR if "Ready for Release"
+        if: env.STATUS == 'ready for release'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+
+          COMMENT="⚠️ This PR is currently in a 'ready for release' state in GitHub Projects and cannot be merged. Please remove the 'Do Not Merge' label to proceed."
+          
+          gh pr comment $PR_NUMBER --repo "$REPO" --body "$COMMENT"
+
+  block_merge_if_label_exists:
+    runs-on: ubuntu-latest
+    needs: check_project_status
+    steps:
+      - name: Check for "Do Not Merge" Label
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+
+          LABELS=$(gh issue view $PR_NUMBER --repo "$REPO" --json labels --jq '.labels[].name')
+
+          if echo "$LABELS" | grep -q "Do Not Merge"; then
+            echo "❌ Merge is blocked due to 'Do Not Merge' label!"
+            exit 1
+          fi
+
+          echo "✅ Merge allowed."
