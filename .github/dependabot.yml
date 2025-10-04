@@ -26,3 +26,9 @@ updates:
     versioning-strategy: increase
     cooldown:
       default-days: 3
+    groups:
+      patch-dependencies:
+        update-types:
+          - "patch"
+        patterns:
+          - "*"
