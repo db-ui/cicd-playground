@@ -4,8 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: ↔ Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      uses: ./.github/actions/extract-branch
       id: extract_branch
     - name: ➕ Create temp or public dir
       run: |
